@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +21,8 @@ import {
   ChevronLeft, 
   ChevronRight,
   Mail,
-  MessageCircle
+  MessageCircle,
+  X
 } from "lucide-react";
 
 const steps = [
@@ -267,6 +269,10 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
     }
   };
 
+  const closeModal = () => {
+    setCurrentStep(-1);
+  };
+
   const updateFormData = (updates: Partial<FormData>) => {
     setFormData({ ...formData, ...updates });
   };
@@ -322,96 +328,107 @@ Contact: ${formData.firstName} ${formData.lastName}`);
     const IconComponent = step.icon;
 
     return (
-      <Card className="w-full max-w-2xl mx-auto mt-8">
-        <CardHeader className="text-center">
-          <div className="flex items-center justify-center mb-4">
-            <IconComponent className="w-12 h-12 text-brand-blue" />
+      <div className="space-y-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <IconComponent className="w-8 h-8 text-brand-blue" />
+            <div>
+              <h3 className="text-xl font-bold">{step.title}</h3>
+              <p className="text-sm text-muted-foreground">{step.description}</p>
+            </div>
           </div>
-          <CardTitle className="text-2xl">{step.title}</CardTitle>
-          <p className="text-muted-foreground">{step.description}</p>
-        </CardHeader>
-        <CardContent className="space-y-6">
+          <Button variant="ghost" size="sm" onClick={closeModal}>
+            <X className="w-4 h-4" />
+          </Button>
+        </div>
+
+        <div className="space-y-4 max-h-96 overflow-y-auto">
           {currentStep === 0 && (
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               {housingTypes.map((type) => (
                 <Button
                   key={type.value}
                   variant={formData.housingType === type.value ? "default" : "outline"}
-                  className="h-auto p-4 flex flex-col items-center gap-2"
+                  className="h-auto p-3 flex flex-col items-center gap-2"
                   onClick={() => updateFormData({ housingType: type.value })}
                 >
-                  <span className="text-2xl">{type.icon}</span>
-                  <span className="font-semibold text-sm">{type.label}</span>
+                  <span className="text-xl">{type.icon}</span>
+                  <span className="font-semibold text-xs">{type.label}</span>
                 </Button>
               ))}
             </div>
           )}
 
           {currentStep === 1 && (
-            <div className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label htmlFor="surface">Surface approximative (m²)</Label>
+                  <Label htmlFor="surface" className="text-sm">Surface (m²)</Label>
                   <Input
                     id="surface"
                     type="number"
+                    size="sm"
                     value={formData.surface || ""}
                     onChange={(e) => updateFormData({ surface: parseInt(e.target.value) || 0 })}
                     placeholder="Ex: 80"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="floor">Étage (sans ascenseur)</Label>
+                  <Label htmlFor="floor" className="text-sm">Étage</Label>
                   <Select value={formData.floor.toString()} onValueChange={(value) => updateFormData({ floor: parseInt(value) })}>
-                    <SelectTrigger>
+                    <SelectTrigger size="sm">
                       <SelectValue placeholder="Sélectionner" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="0">Rez-de-chaussée</SelectItem>
-                      <SelectItem value="1">1er étage</SelectItem>
-                      <SelectItem value="2">2ème étage</SelectItem>
-                      <SelectItem value="3">3ème étage</SelectItem>
-                      <SelectItem value="4">4ème étage et +</SelectItem>
+                      <SelectItem value="0">RDC</SelectItem>
+                      <SelectItem value="1">1er</SelectItem>
+                      <SelectItem value="2">2ème</SelectItem>
+                      <SelectItem value="3">3ème</SelectItem>
+                      <SelectItem value="4">4ème+</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-2">
                 <div>
-                  <Label htmlFor="bedrooms">Chambres</Label>
+                  <Label htmlFor="bedrooms" className="text-xs">Chambres</Label>
                   <Input
                     id="bedrooms"
                     type="number"
+                    size="sm"
                     min="0"
                     value={formData.bedrooms}
                     onChange={(e) => updateFormData({ bedrooms: parseInt(e.target.value) || 0 })}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="living-rooms">Salon/Séjour</Label>
+                  <Label htmlFor="living-rooms" className="text-xs">Salon</Label>
                   <Input
                     id="living-rooms"
                     type="number"
+                    size="sm"
                     min="0"
                     value={formData.livingRooms}
                     onChange={(e) => updateFormData({ livingRooms: parseInt(e.target.value) || 0 })}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="kitchens">Cuisine</Label>
+                  <Label htmlFor="kitchens" className="text-xs">Cuisine</Label>
                   <Input
                     id="kitchens"
                     type="number"
+                    size="sm"
                     min="0"
                     value={formData.kitchens}
                     onChange={(e) => updateFormData({ kitchens: parseInt(e.target.value) || 0 })}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="bathrooms">Salle de bain</Label>
+                  <Label htmlFor="bathrooms" className="text-xs">SDB</Label>
                   <Input
                     id="bathrooms"
                     type="number"
+                    size="sm"
                     min="0"
                     value={formData.bathrooms}
                     onChange={(e) => updateFormData({ bathrooms: parseInt(e.target.value) || 0 })}
@@ -422,23 +439,18 @@ Contact: ${formData.firstName} ${formData.lastName}`);
           )}
 
           {currentStep === 2 && (
-            <div className="space-y-6">
-              <div className="text-center">
-                <h4 className="font-semibold mb-4">Inventaire de vos objets à transporter</h4>
-                <p className="text-muted-foreground">Sélectionnez tous les objets que vous souhaitez déménager</p>
-              </div>
-              
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-2">
                 {furnitureItems.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+                  <div key={item.id} className="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-800">
                     <Checkbox
                       id={item.id}
                       checked={formData.furnitureInventory.includes(item.id)}
                       onCheckedChange={(checked) => handleFurnitureToggle(item.id, checked as boolean)}
                     />
                     <label htmlFor={item.id} className="flex items-center gap-2 cursor-pointer flex-1">
-                      <span className="text-lg">{item.icon}</span>
-                      <span className="text-sm font-medium">{item.label}</span>
+                      <span className="text-sm">{item.icon}</span>
+                      <span className="text-xs font-medium">{item.label}</span>
                     </label>
                   </div>
                 ))}
@@ -447,109 +459,110 @@ Contact: ${formData.firstName} ${formData.lastName}`);
           )}
 
           {currentStep === 3 && (
-            <div className="space-y-6">
-              <div className="text-center">
-                <h4 className="font-semibold mb-4">Adresses et accessibilité</h4>
-                <p className="text-muted-foreground">Indiquez les adresses et évaluez la facilité d'accès pour notre camion</p>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="departure-address" className="text-sm">Adresse de départ</Label>
+                <Input
+                  id="departure-address"
+                  size="sm"
+                  value={formData.departureAddress}
+                  onChange={(e) => updateFormData({ departureAddress: e.target.value })}
+                  placeholder="Adresse complète"
+                />
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  <Input
+                    size="sm"
+                    value={formData.departureCity}
+                    onChange={(e) => updateFormData({ departureCity: e.target.value })}
+                    placeholder="Ville"
+                  />
+                  <Input
+                    size="sm"
+                    value={formData.departurePostal}
+                    onChange={(e) => updateFormData({ departurePostal: e.target.value })}
+                    placeholder="Code postal"
+                  />
+                </div>
               </div>
-              <div className="space-y-6">
-                <div>
-                  <Label htmlFor="departure-address">Adresse de départ</Label>
-                  <Input
-                    id="departure-address"
-                    value={formData.departureAddress}
-                    onChange={(e) => updateFormData({ departureAddress: e.target.value })}
-                    placeholder="Adresse complète de départ"
-                  />
-                  <div className="grid md:grid-cols-2 gap-4 mt-2">
-                    <Input
-                      value={formData.departureCity}
-                      onChange={(e) => updateFormData({ departureCity: e.target.value })}
-                      placeholder="Ville"
-                    />
-                    <Input
-                      value={formData.departurePostal}
-                      onChange={(e) => updateFormData({ departurePostal: e.target.value })}
-                      placeholder="Code postal"
-                    />
-                  </div>
-                </div>
 
-                <div>
-                  <Label>Accessibilité du départ pour le camion</Label>
-                  <div className="grid grid-cols-2 gap-4 mt-2">
-                    {accessibilityOptions.map((option) => (
-                      <Button
-                        key={option.value}
-                        variant={formData.departureAccessibility === option.value ? "default" : "outline"}
-                        className="h-auto p-4 flex flex-col items-start gap-2"
-                        onClick={() => updateFormData({ departureAccessibility: option.value })}
-                      >
-                        <span className="font-semibold">{option.label}</span>
-                        <span className="text-xs text-muted-foreground">{option.description}</span>
-                      </Button>
-                    ))}
-                  </div>
+              <div>
+                <Label className="text-sm">Accessibilité départ</Label>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  {accessibilityOptions.map((option) => (
+                    <Button
+                      key={option.value}
+                      variant={formData.departureAccessibility === option.value ? "default" : "outline"}
+                      className="h-auto p-2 flex flex-col items-start gap-1"
+                      onClick={() => updateFormData({ departureAccessibility: option.value })}
+                    >
+                      <span className="font-semibold text-xs">{option.label}</span>
+                      <span className="text-xs text-muted-foreground">{option.description}</span>
+                    </Button>
+                  ))}
                 </div>
-                
-                <div>
-                  <Label htmlFor="arrival-address">Adresse d'arrivée</Label>
+              </div>
+              
+              <div>
+                <Label htmlFor="arrival-address" className="text-sm">Adresse d'arrivée</Label>
+                <Input
+                  id="arrival-address"
+                  size="sm"
+                  value={formData.arrivalAddress}
+                  onChange={(e) => updateFormData({ arrivalAddress: e.target.value })}
+                  placeholder="Adresse complète"
+                />
+                <div className="grid grid-cols-2 gap-2 mt-2">
                   <Input
-                    id="arrival-address"
-                    value={formData.arrivalAddress}
-                    onChange={(e) => updateFormData({ arrivalAddress: e.target.value })}
-                    placeholder="Adresse complète d'arrivée"
+                    size="sm"
+                    value={formData.arrivalCity}
+                    onChange={(e) => updateFormData({ arrivalCity: e.target.value })}
+                    placeholder="Ville"
                   />
-                  <div className="grid md:grid-cols-2 gap-4 mt-2">
-                    <Input
-                      value={formData.arrivalCity}
-                      onChange={(e) => updateFormData({ arrivalCity: e.target.value })}
-                      placeholder="Ville"
-                    />
-                    <Input
-                      value={formData.arrivalPostal}
-                      onChange={(e) => updateFormData({ arrivalPostal: e.target.value })}
-                      placeholder="Code postal"
-                    />
-                  </div>
+                  <Input
+                    size="sm"
+                    value={formData.arrivalPostal}
+                    onChange={(e) => updateFormData({ arrivalPostal: e.target.value })}
+                    placeholder="Code postal"
+                  />
                 </div>
+              </div>
 
-                <div>
-                  <Label>Accessibilité de l'arrivée pour le camion</Label>
-                  <div className="grid grid-cols-2 gap-4 mt-2">
-                    {accessibilityOptions.map((option) => (
-                      <Button
-                        key={option.value}
-                        variant={formData.arrivalAccessibility === option.value ? "default" : "outline"}
-                        className="h-auto p-4 flex flex-col items-start gap-2"
-                        onClick={() => updateFormData({ arrivalAccessibility: option.value })}
-                      >
-                        <span className="font-semibold">{option.label}</span>
-                        <span className="text-xs text-muted-foreground">{option.description}</span>
-                      </Button>
-                    ))}
-                  </div>
+              <div>
+                <Label className="text-sm">Accessibilité arrivée</Label>
+                <div className="grid grid-cols-2 gap-2 mt-2">
+                  {accessibilityOptions.map((option) => (
+                    <Button
+                      key={option.value}
+                      variant={formData.arrivalAccessibility === option.value ? "default" : "outline"}
+                      className="h-auto p-2 flex flex-col items-start gap-1"
+                      onClick={() => updateFormData({ arrivalAccessibility: option.value })}
+                    >
+                      <span className="font-semibold text-xs">{option.label}</span>
+                      <span className="text-xs text-muted-foreground">{option.description}</span>
+                    </Button>
+                  ))}
                 </div>
               </div>
             </div>
           )}
 
           {currentStep === 4 && (
-            <div className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label htmlFor="moving-date">Date souhaitée</Label>
+                  <Label htmlFor="moving-date" className="text-sm">Date souhaitée</Label>
                   <Input
                     id="moving-date"
                     type="date"
+                    size="sm"
                     value={formData.movingDate}
                     onChange={(e) => updateFormData({ movingDate: e.target.value })}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="date-flexibility">Flexibilité</Label>
+                  <Label htmlFor="date-flexibility" className="text-sm">Flexibilité</Label>
                   <Select value={formData.dateFlexibility} onValueChange={(value) => updateFormData({ dateFlexibility: value })}>
-                    <SelectTrigger>
+                    <SelectTrigger size="sm">
                       <SelectValue placeholder="Sélectionner" />
                     </SelectTrigger>
                     <SelectContent>
@@ -561,17 +574,17 @@ Contact: ${formData.firstName} ${formData.lastName}`);
                 </div>
               </div>
               <div>
-                <Label>Créneau horaire préféré</Label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-2">
+                <Label className="text-sm">Créneau horaire</Label>
+                <div className="grid grid-cols-3 gap-2 mt-2">
                   {timeSlots.map((slot) => (
                     <Button
                       key={slot.value}
                       variant={formData.timeSlot === slot.value ? "default" : "outline"}
-                      className="h-auto p-3 flex flex-col items-center gap-1"
+                      className="h-auto p-2 flex flex-col items-center gap-1"
                       onClick={() => updateFormData({ timeSlot: slot.value })}
                     >
-                      <span className="text-xl">{slot.icon}</span>
-                      <div className="font-semibold text-sm">{slot.label}</div>
+                      <span className="text-sm">{slot.icon}</span>
+                      <div className="font-semibold text-xs">{slot.label}</div>
                       <div className="text-xs text-muted-foreground">{slot.time}</div>
                     </Button>
                   ))}
@@ -581,9 +594,9 @@ Contact: ${formData.firstName} ${formData.lastName}`);
           )}
 
           {currentStep === 5 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-3">
               {additionalServices.map((service) => (
-                <div key={service.id} className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+                <div key={service.id} className="flex items-start space-x-3 p-3 border rounded hover:bg-accent/50 transition-colors">
                   <Checkbox
                     id={service.id}
                     checked={formData.additionalServices.includes(service.id)}
@@ -600,44 +613,48 @@ Contact: ${formData.firstName} ${formData.lastName}`);
             </div>
           )}
 
-          {currentStep === 5 && (
-            <div className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
+          {currentStep === 6 && (
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label htmlFor="firstName">Prénom *</Label>
+                  <Label htmlFor="firstName" className="text-sm">Prénom *</Label>
                   <Input
                     id="firstName"
+                    size="sm"
                     value={formData.firstName}
                     onChange={(e) => updateFormData({ firstName: e.target.value })}
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="lastName">Nom *</Label>
+                  <Label htmlFor="lastName" className="text-sm">Nom *</Label>
                   <Input
                     id="lastName"
+                    size="sm"
                     value={formData.lastName}
                     onChange={(e) => updateFormData({ lastName: e.target.value })}
                     required
                   />
                 </div>
               </div>
-              <div className="grid md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <Label htmlFor="email">Email *</Label>
+                  <Label htmlFor="email" className="text-sm">Email *</Label>
                   <Input
                     id="email"
                     type="email"
+                    size="sm"
                     value={formData.email}
                     onChange={(e) => updateFormData({ email: e.target.value })}
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phone">Téléphone *</Label>
+                  <Label htmlFor="phone" className="text-sm">Téléphone *</Label>
                   <Input
                     id="phone"
                     type="tel"
+                    size="sm"
                     value={formData.phone}
                     onChange={(e) => updateFormData({ phone: e.target.value })}
                     required
@@ -645,10 +662,10 @@ Contact: ${formData.firstName} ${formData.lastName}`);
                 </div>
               </div>
               <div>
-                <Label htmlFor="budget-range">Budget approximatif (optionnel)</Label>
+                <Label htmlFor="budget-range" className="text-sm">Budget approximatif</Label>
                 <Select value={formData.budgetRange} onValueChange={(value) => updateFormData({ budgetRange: value })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Sélectionner une fourchette" />
+                  <SelectTrigger size="sm">
+                    <SelectValue placeholder="Sélectionner" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="0-2000">Moins de 2 000 DH</SelectItem>
@@ -659,58 +676,61 @@ Contact: ${formData.firstName} ${formData.lastName}`);
                 </Select>
               </div>
               <div>
-                <Label htmlFor="additional-comments">Commentaires additionnels</Label>
+                <Label htmlFor="additional-comments" className="text-sm">Commentaires</Label>
                 <Textarea
                   id="additional-comments"
                   value={formData.additionalComments}
                   onChange={(e) => updateFormData({ additionalComments: e.target.value })}
-                  placeholder="Informations supplémentaires, objets fragiles, contraintes particulières..."
-                  rows={4}
+                  placeholder="Informations supplémentaires..."
+                  rows={3}
                 />
               </div>
             </div>
           )}
+        </div>
 
-          <div className="flex justify-between items-center pt-6 border-t">
-            <Button
-              variant="outline"
-              onClick={prevStep}
-              disabled={currentStep === 0}
-              className="flex items-center gap-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Précédent
-            </Button>
-            <Button
-              onClick={nextStep}
-              disabled={createQuoteMutation.isPending}
-              className="flex items-center gap-2 cta-button text-white font-bold"
-            >
-              {currentStep === steps.length - 1 ? "Terminer" : "Suivant"}
-              <ChevronRight className="w-4 h-4" />
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+        <div className="flex justify-between items-center pt-4 border-t">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={prevStep}
+            disabled={currentStep === 0}
+            className="flex items-center gap-2"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Précédent
+          </Button>
+          <Button
+            size="sm"
+            onClick={nextStep}
+            disabled={createQuoteMutation.isPending}
+            className="flex items-center gap-2 cta-button text-white font-bold"
+          >
+            {currentStep === steps.length - 1 ? "Terminer" : "Suivant"}
+            <ChevronRight className="w-4 h-4" />
+          </Button>
+        </div>
+      </div>
     );
   };
 
   if (createQuoteMutation.isSuccess) {
     return (
       <div className="text-center space-y-6">
-        <Card className="max-w-2xl mx-auto">
+        <Card className="max-w-lg mx-auto">
           <CardContent className="pt-6">
             <div className="text-center space-y-4">
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
                 <span className="text-2xl">✅</span>
               </div>
-              <h3 className="text-2xl font-bold">Votre demande est prête !</h3>
-              <p className="text-muted-foreground">
-                Vous pouvez maintenant nous l'envoyer par email ou nous contacter directement sur WhatsApp.
+              <h3 className="text-xl font-bold">Votre demande est prête !</h3>
+              <p className="text-muted-foreground text-sm">
+                Vous pouvez maintenant nous l'envoyer par email ou nous contacter sur WhatsApp.
               </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
+              <div className="flex flex-col gap-3 pt-4">
                 <Button
                   asChild
+                  size="sm"
                   className="cta-button text-white font-bold flex items-center gap-2"
                 >
                   <a href={generateMailtoLink()}>
@@ -720,6 +740,7 @@ Contact: ${formData.firstName} ${formData.lastName}`);
                 </Button>
                 <Button
                   asChild
+                  size="sm"
                   className="bg-green-500 hover:bg-green-600 text-white font-bold flex items-center gap-2"
                 >
                   <a href={generateWhatsAppLink()} target="_blank" rel="noopener noreferrer">
@@ -736,36 +757,47 @@ Contact: ${formData.firstName} ${formData.lastName}`);
   }
 
   return (
-    <div className="space-y-8">
-      {/* Honeycomb Grid */}
-      <div className="honeycomb-container">
-        {steps.map((step) => {
-          const IconComponent = step.icon;
-          const isCompleted = completedSteps.includes(step.id);
-          const isActive = currentStep === step.id;
-          
-          return (
-            <div
-              key={step.id}
-              className={`honeycomb-cell ${isCompleted ? "completed" : ""} ${isActive ? "active" : ""}`}
-              onClick={() => selectStep(step.id)}
-            >
-              <div className="hexagon"></div>
-              <div className="hex-content">
-                <IconComponent className="w-6 h-6 mx-auto mb-1" />
-                <div className="text-xs font-bold leading-tight">
-                  {step.title.split(" ").map((word, i) => (
-                    <div key={i}>{word}</div>
-                  ))}
+    <div className="space-y-6">
+      {/* Main Layout: Honeycomb + Modal */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        {/* Honeycomb Grid */}
+        <div className="honeycomb-container justify-start">
+          {steps.map((step) => {
+            const IconComponent = step.icon;
+            const isCompleted = completedSteps.includes(step.id);
+            const isActive = currentStep === step.id;
+            
+            return (
+              <div
+                key={step.id}
+                className={`honeycomb-cell ${isCompleted ? "completed" : ""} ${isActive ? "active" : ""}`}
+                onClick={() => selectStep(step.id)}
+              >
+                <div className="hexagon"></div>
+                <div className="hex-content">
+                  <IconComponent className="w-5 h-5 mx-auto mb-1" />
+                  <div className="text-xs font-bold leading-tight">
+                    {step.title.split(" ").map((word, i) => (
+                      <div key={i}>{word}</div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
 
-      {/* Step Content */}
-      {currentStep >= 0 && renderStepContent()}
+        {/* Modal Content Area */}
+        <div className="min-h-[400px]">
+          {currentStep >= 0 && (
+            <Card className="w-full">
+              <CardContent className="p-4">
+                {renderStepContent()}
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

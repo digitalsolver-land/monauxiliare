@@ -149,18 +149,18 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 800px;
-  margin: 2rem auto;
-  gap: 10px;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 8px;
 }
 
 .honeycomb-cell {
-  flex: 0 0 150px;
-  height: 170px;
+  flex: 0 0 120px;
+  height: 140px;
   position: relative;
   cursor: pointer;
   transition: transform 0.2s;
-  margin: 20px 5px;
+  margin: 15px 3px;
 }
 
 .honeycomb-cell:hover {
