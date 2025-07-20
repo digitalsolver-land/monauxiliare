@@ -46,80 +46,61 @@ export default function Quote() {
 
   return (
     <div className="page-view">
-      <div className="container mx-auto px-6 py-16 md:py-24">
-        {/* Hero Section with Gamification */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <ProgressTruckSVG progress={quoteProgress} className="w-64 h-16" />
+      <div className="flex">
+        {/* Sidebar with Features */}
+        <div className="w-80 p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+          <h3 className="text-xl font-bold mb-6 text-center">Nos Services</h3>
+          <div className="space-y-6">
+            {features.map((feature, index) => (
+              <Card key={index} className="p-4 hover:shadow-lg transition-shadow">
+                <CardContent className="space-y-3 p-0">
+                  <div className="flex justify-center">
+                    {feature.icon}
+                  </div>
+                  <h4 className="font-bold text-center">{feature.title}</h4>
+                  <p className="text-muted-foreground text-sm text-center">{feature.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-          
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            🎮 Devis Interactif Gamifié
-          </h1>
-          <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-lg">
-            Cliquez sur chaque hexagone pour débloquer votre devis personnalisé. 
-            Plus vous avancez, plus vous gagnez d'avantages !
-          </p>
+        </div>
 
-          {/* Progress Bar */}
-          <div className="max-w-md mx-auto mt-6">
-            <div className="progress-bar">
-              <div 
-                className="progress-fill" 
-                style={{ width: `${quoteProgress}%` }}
-              />
+        {/* Main Content */}
+        <div className="flex-1 px-6 py-16 md:py-24">
+          {/* Hero Section */}
+          <div className="text-center mb-12">
+            <div className="flex justify-center mb-6">
+              <TruckSVG className="w-32 h-20 animate-move-box" />
             </div>
-            <p className="text-sm text-muted-foreground mt-2">
-              Progression : {Math.round(quoteProgress)}% complété
+            
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Évaluer mon déménagement
+            </h1>
+            <p className="mt-3 text-muted-foreground max-w-2xl mx-auto text-lg">
+              Cliquez sur chaque hexagone pour évaluer votre déménagement. 
+              Remplissez chaque étape pour obtenir votre devis personnalisé.
             </p>
           </div>
 
-          {/* Achievements */}
-          {achievements.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-2 mt-4">
-              {achievements.map((achievement, index) => (
-                <div key={index} className="achievement-badge">
-                  🏆 {achievement}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {features.map((feature, index) => (
-            <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
-              <CardContent className="space-y-4">
-                <div className="flex justify-center">
-                  {feature.icon}
-                </div>
-                <h3 className="font-bold text-lg">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-
-        {/* Game Instructions */}
+        {/* Instructions */}
         <Card className="mb-8 bg-gradient-to-r from-brand-orange/10 to-brand-green/10">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
               <div className="animate-bounce-custom">
-                🎯
+                📋
               </div>
               <div>
-                <h3 className="font-bold text-lg mb-2">Comment jouer :</h3>
+                <h3 className="font-bold text-lg mb-2">Comment réaliser mon déménagement :</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                   <div className="space-y-2">
-                    <p>• <strong>Étape 1 :</strong> Cliquez sur chaque hexagone orange</p>
-                    <p>• <strong>Étape 2 :</strong> Remplissez les informations demandées</p>
-                    <p>• <strong>Étape 3 :</strong> Débloquez des bonus en progressant</p>
+                    <p>• <strong>Étape 1 :</strong> Choisissez votre type de logement</p>
+                    <p>• <strong>Étape 2 :</strong> Indiquez la surface et les pièces</p>
+                    <p>• <strong>Étape 3 :</strong> Listez vos objets à transporter</p>
                   </div>
                   <div className="space-y-2">
-                    <p>• <strong>🎁 Bonus 25% :</strong> Remise early bird</p>
-                    <p>• <strong>🎁 Bonus 50% :</strong> Emballage gratuit inclus</p>
-                    <p>• <strong>🎁 Bonus 100% :</strong> Devis prioritaire + conseil expert</p>
+                    <p>• <strong>Étape 4 :</strong> Évaluez l'accessibilité des adresses</p>
+                    <p>• <strong>Étape 5 :</strong> Choisissez votre date et services</p>
+                    <p>• <strong>Étape 6 :</strong> Recevez votre devis par email</p>
                   </div>
                 </div>
               </div>
@@ -137,5 +118,6 @@ export default function Quote() {
         </div>
       </div>
     </div>
+  </div>
   );
 }

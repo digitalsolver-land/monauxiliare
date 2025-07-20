@@ -38,24 +38,30 @@ const steps = [
   },
   {
     id: 2,
-    title: "Adresses Départ/Arrivée",
-    description: "Indiquez les adresses de départ et d'arrivée",
-    icon: MapPin,
+    title: "Inventaire Objets",
+    description: "Listez vos meubles et objets à transporter",
+    icon: Package,
   },
   {
     id: 3,
+    title: "Adresses & Accessibilité",
+    description: "Adresses et facilité d'accès pour le camion",
+    icon: MapPin,
+  },
+  {
+    id: 4,
     title: "Date & Créneaux",
     description: "Choisissez votre date de déménagement préférée",
     icon: Calendar,
   },
   {
-    id: 4,
+    id: 5,
     title: "Services Additionnels",
     description: "Sélectionnez les services supplémentaires souhaités",
-    icon: Package,
+    icon: User,
   },
   {
-    id: 5,
+    id: 6,
     title: "Informations Contact",
     description: "Vos coordonnées pour l'établissement du devis",
     icon: User,
@@ -75,6 +81,28 @@ const timeSlots = [
   { value: "morning", label: "Matin", time: "8h-12h", icon: "🌅" },
   { value: "afternoon", label: "Après-midi", time: "13h-17h", icon: "☀️" },
   { value: "flexible", label: "Flexible", time: "Toute la journée", icon: "🕒" },
+];
+
+const furnitureItems = [
+  { id: "sofa", label: "Canapé", icon: "🛋️" },
+  { id: "bed", label: "Lit", icon: "🛏️" },
+  { id: "wardrobe", label: "Armoire", icon: "👔" },
+  { id: "table", label: "Table", icon: "🪑" },
+  { id: "fridge", label: "Réfrigérateur", icon: "🧊" },
+  { id: "washingmachine", label: "Lave-linge", icon: "🌊" },
+  { id: "tv", label: "Télévision", icon: "📺" },
+  { id: "piano", label: "Piano", icon: "🎹" },
+  { id: "dishwasher", label: "Lave-vaisselle", icon: "🍽️" },
+  { id: "books", label: "Bibliothèque", icon: "📚" },
+  { id: "boxes", label: "Cartons divers", icon: "📦" },
+  { id: "other", label: "Autres objets lourds", icon: "📋" },
+];
+
+const accessibilityOptions = [
+  { value: "easy", label: "Facile", description: "Accès direct, pas d'obstacles" },
+  { value: "moderate", label: "Modéré", description: "Quelques marches ou distance courte" },
+  { value: "difficult", label: "Difficile", description: "Étages sans ascenseur, rue étroite" },
+  { value: "very_difficult", label: "Très difficile", description: "Accès très compliqué pour camion" },
 ];
 
 const additionalServices = [
@@ -104,6 +132,9 @@ type FormData = {
   dateFlexibility: string;
   timeSlot: string;
   additionalServices: string[];
+  furnitureInventory: string[];
+  departureAccessibility: string;
+  arrivalAccessibility: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -138,6 +169,9 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
     dateFlexibility: "",
     timeSlot: "",
     additionalServices: [],
+    furnitureInventory: [],
+    departureAccessibility: "",
+    arrivalAccessibility: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -244,6 +278,13 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
     updateFormData({ additionalServices: services });
   };
 
+  const handleFurnitureToggle = (itemId: string, checked: boolean) => {
+    const items = checked
+      ? [...formData.furnitureInventory, itemId]
+      : formData.furnitureInventory.filter(i => i !== itemId);
+    updateFormData({ furnitureInventory: items });
+  };
+
   const generateMailtoLink = () => {
     const subject = encodeURIComponent("Demande de devis déménagement");
     const body = encodeURIComponent(`Bonjour,
@@ -262,7 +303,7 @@ ${formData.firstName} ${formData.lastName}
 ${formData.email}
 ${formData.phone}`);
     
-    return `mailto:contact@monauxiliaire.com?subject=${subject}&body=${body}`;
+    return `mailto:devis@d3drone.com?subject=${subject}&body=${body}`;
   };
 
   const generateWhatsAppLink = () => {
@@ -382,52 +423,118 @@ Contact: ${formData.firstName} ${formData.lastName}`);
 
           {currentStep === 2 && (
             <div className="space-y-6">
-              <div>
-                <Label htmlFor="departure-address">Adresse de départ</Label>
-                <Input
-                  id="departure-address"
-                  value={formData.departureAddress}
-                  onChange={(e) => updateFormData({ departureAddress: e.target.value })}
-                  placeholder="Adresse complète de départ"
-                />
-                <div className="grid md:grid-cols-2 gap-4 mt-2">
-                  <Input
-                    value={formData.departureCity}
-                    onChange={(e) => updateFormData({ departureCity: e.target.value })}
-                    placeholder="Ville"
-                  />
-                  <Input
-                    value={formData.departurePostal}
-                    onChange={(e) => updateFormData({ departurePostal: e.target.value })}
-                    placeholder="Code postal"
-                  />
-                </div>
+              <div className="text-center">
+                <h4 className="font-semibold mb-4">Inventaire de vos objets à transporter</h4>
+                <p className="text-muted-foreground">Sélectionnez tous les objets que vous souhaitez déménager</p>
               </div>
-              <div>
-                <Label htmlFor="arrival-address">Adresse d'arrivée</Label>
-                <Input
-                  id="arrival-address"
-                  value={formData.arrivalAddress}
-                  onChange={(e) => updateFormData({ arrivalAddress: e.target.value })}
-                  placeholder="Adresse complète d'arrivée"
-                />
-                <div className="grid md:grid-cols-2 gap-4 mt-2">
-                  <Input
-                    value={formData.arrivalCity}
-                    onChange={(e) => updateFormData({ arrivalCity: e.target.value })}
-                    placeholder="Ville"
-                  />
-                  <Input
-                    value={formData.arrivalPostal}
-                    onChange={(e) => updateFormData({ arrivalPostal: e.target.value })}
-                    placeholder="Code postal"
-                  />
-                </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {furnitureItems.map((item) => (
+                  <div key={item.id} className="flex items-center space-x-2 p-3 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <Checkbox
+                      id={item.id}
+                      checked={formData.furnitureInventory.includes(item.id)}
+                      onCheckedChange={(checked) => handleFurnitureToggle(item.id, checked as boolean)}
+                    />
+                    <label htmlFor={item.id} className="flex items-center gap-2 cursor-pointer flex-1">
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
           {currentStep === 3 && (
+            <div className="space-y-6">
+              <div className="text-center">
+                <h4 className="font-semibold mb-4">Adresses et accessibilité</h4>
+                <p className="text-muted-foreground">Indiquez les adresses et évaluez la facilité d'accès pour notre camion</p>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <Label htmlFor="departure-address">Adresse de départ</Label>
+                  <Input
+                    id="departure-address"
+                    value={formData.departureAddress}
+                    onChange={(e) => updateFormData({ departureAddress: e.target.value })}
+                    placeholder="Adresse complète de départ"
+                  />
+                  <div className="grid md:grid-cols-2 gap-4 mt-2">
+                    <Input
+                      value={formData.departureCity}
+                      onChange={(e) => updateFormData({ departureCity: e.target.value })}
+                      placeholder="Ville"
+                    />
+                    <Input
+                      value={formData.departurePostal}
+                      onChange={(e) => updateFormData({ departurePostal: e.target.value })}
+                      placeholder="Code postal"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Accessibilité du départ pour le camion</Label>
+                  <div className="grid grid-cols-2 gap-4 mt-2">
+                    {accessibilityOptions.map((option) => (
+                      <Button
+                        key={option.value}
+                        variant={formData.departureAccessibility === option.value ? "default" : "outline"}
+                        className="h-auto p-4 flex flex-col items-start gap-2"
+                        onClick={() => updateFormData({ departureAccessibility: option.value })}
+                      >
+                        <span className="font-semibold">{option.label}</span>
+                        <span className="text-xs text-muted-foreground">{option.description}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+                
+                <div>
+                  <Label htmlFor="arrival-address">Adresse d'arrivée</Label>
+                  <Input
+                    id="arrival-address"
+                    value={formData.arrivalAddress}
+                    onChange={(e) => updateFormData({ arrivalAddress: e.target.value })}
+                    placeholder="Adresse complète d'arrivée"
+                  />
+                  <div className="grid md:grid-cols-2 gap-4 mt-2">
+                    <Input
+                      value={formData.arrivalCity}
+                      onChange={(e) => updateFormData({ arrivalCity: e.target.value })}
+                      placeholder="Ville"
+                    />
+                    <Input
+                      value={formData.arrivalPostal}
+                      onChange={(e) => updateFormData({ arrivalPostal: e.target.value })}
+                      placeholder="Code postal"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label>Accessibilité de l'arrivée pour le camion</Label>
+                  <div className="grid grid-cols-2 gap-4 mt-2">
+                    {accessibilityOptions.map((option) => (
+                      <Button
+                        key={option.value}
+                        variant={formData.arrivalAccessibility === option.value ? "default" : "outline"}
+                        className="h-auto p-4 flex flex-col items-start gap-2"
+                        onClick={() => updateFormData({ arrivalAccessibility: option.value })}
+                      >
+                        <span className="font-semibold">{option.label}</span>
+                        <span className="text-xs text-muted-foreground">{option.description}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentStep === 4 && (
             <div className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
@@ -473,7 +580,7 @@ Contact: ${formData.firstName} ${formData.lastName}`);
             </div>
           )}
 
-          {currentStep === 4 && (
+          {currentStep === 5 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {additionalServices.map((service) => (
                 <div key={service.id} className="flex items-start space-x-3 p-4 border rounded-lg hover:bg-accent/50 transition-colors">
