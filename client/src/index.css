@@ -23,7 +23,7 @@
   --destructive-foreground: hsl(0, 0%, 98%);
   --ring: hsl(0, 0%, 0%);
   --radius: 0.5rem;
-  
+
   /* Brand colors */
   --brand-orange: hsl(25, 100%, 50%);
   --brand-green: hsl(120, 100%, 35%);
@@ -401,18 +401,49 @@
     height: 140px;
     margin: 15px 3px;
   }
-  
+
   .honeycomb-cell .hex-content {
     font-size: 0.75rem;
   }
-  
+
   .chatbot-window {
     width: 300px;
     height: 400px;
   }
-  
+
   .chatbot-container {
     bottom: 1rem;
     right: 1rem;
   }
+}
+
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.prose {
+  max-width: none;
+}
+
+.prose h2 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose ul {
+  margin-bottom: 1rem;
 }

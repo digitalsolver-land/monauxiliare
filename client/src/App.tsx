@@ -12,22 +12,24 @@ import Footer from "./components/Footer";
 import Chatbot from "./components/Chatbot";
 import ServiceModal from "./components/ServiceModal";
 import Home from "./pages/Home";
-import Services from "./pages/Services";
-import Hub from "./pages/Hub";
 import About from "./pages/About";
-import Contact from "./pages/Contact";
+import Services from "./pages/Services";
 import Quote from "./pages/Quote";
+import Contact from "./pages/Contact";
+import Hub from "./pages/Hub";
+import Article from "./pages/Article";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   // Track page views when routes change
   useAnalytics();
-  
+
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/services" component={Services} />
       <Route path="/hub" component={Hub} />
+      <Route path="/hub/article/:id" component={Article} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
       <Route path="/devis" component={Quote} />
