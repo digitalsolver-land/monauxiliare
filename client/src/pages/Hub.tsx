@@ -134,8 +134,10 @@ const ArticleModal = ({ article, onClose }: { article: Article; onClose: () => v
       </DialogHeader>
 
       <div className="flex-1 overflow-hidden">
-        <ScrollArea className="h-full">
-          <div className="p-6 space-y-8">
+        <ScrollArea className="h-full max-h-[calc(95vh-200px)]">
+          <div className="p-6 space-y-8 pr-4"></div>
+        </ScrollArea>
+      </div>
             {/* Introduction */}
             <div className="text-lg leading-relaxed">
               {article.content.introduction}
@@ -276,8 +278,6 @@ const ArticleModal = ({ article, onClose }: { article: Article; onClose: () => v
               </div>
             )}
           </div>
-        </ScrollArea>
-      </div>
     </DialogContent>
   );
 };
