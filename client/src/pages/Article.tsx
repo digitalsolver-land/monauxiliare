@@ -142,7 +142,7 @@ export default function Article() {
         {/* Article Header */}
         <header className="mb-8">
           <div className="flex items-center gap-4 mb-6">
-            <Badge className={getCategoryColor(article.category)} className="flex items-center gap-2">
+            <Badge className={`${getCategoryColor(article.category)} flex items-center gap-2`}>
               {getCategoryIcon(article.category)}
               {article.category}
             </Badge>
@@ -316,7 +316,7 @@ export default function Article() {
                           {getCategoryIcon(relatedArticle.category)}
                         </div>
                         <div className="flex-1">
-                          <Badge className={getCategoryColor(relatedArticle.category)} className="mb-2">
+                          <Badge className={`${getCategoryColor(relatedArticle.category)} mb-2`}>
                             {relatedArticle.category}
                           </Badge>
                           <h3 className="font-semibold mb-2 group-hover:brand-orange transition-colors line-clamp-2">
