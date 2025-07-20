@@ -85,20 +85,82 @@ const timeSlots = [
   { value: "flexible", label: "Flexible", time: "Toute la journée", icon: "🕒" },
 ];
 
-const furnitureItems = [
-  { id: "sofa", label: "Canapé", icon: "🛋️" },
-  { id: "bed", label: "Lit", icon: "🛏️" },
-  { id: "wardrobe", label: "Armoire", icon: "👔" },
-  { id: "table", label: "Table", icon: "🪑" },
-  { id: "fridge", label: "Réfrigérateur", icon: "🧊" },
-  { id: "washingmachine", label: "Lave-linge", icon: "🌊" },
-  { id: "tv", label: "Télévision", icon: "📺" },
-  { id: "piano", label: "Piano", icon: "🎹" },
-  { id: "dishwasher", label: "Lave-vaisselle", icon: "🍽️" },
-  { id: "books", label: "Bibliothèque", icon: "📚" },
-  { id: "boxes", label: "Cartons divers", icon: "📦" },
-  { id: "other", label: "Autres objets lourds", icon: "📋" },
+const roomTypes = [
+  { id: "living-room", label: "Salon", icon: "🛋️" },
+  { id: "bedroom", label: "Chambre", icon: "🛏️" },
+  { id: "kitchen", label: "Cuisine", icon: "🍳" },
+  { id: "bathroom", label: "Salle de bain", icon: "🚿" },
+  { id: "office", label: "Bureau", icon: "💼" },
+  { id: "dining-room", label: "Salle à manger", icon: "🍽️" },
+  { id: "child-room", label: "Chambre enfant", icon: "🧸" },
+  { id: "garage", label: "Garage", icon: "🚗" },
+  { id: "basement", label: "Cave/Sous-sol", icon: "🏠" },
+  { id: "attic", label: "Grenier", icon: "🏠" },
 ];
+
+const furnitureByRoom = {
+  "living-room": [
+    { id: "sofa", label: "Canapé", icon: "🛋️" },
+    { id: "tv", label: "Télévision", icon: "📺" },
+    { id: "coffee-table", label: "Table basse", icon: "🪑" },
+    { id: "bookshelf", label: "Bibliothèque", icon: "📚" },
+    { id: "armchair", label: "Fauteuil", icon: "🪑" },
+    { id: "plants", label: "Plantes", icon: "🪴" },
+  ],
+  "bedroom": [
+    { id: "bed", label: "Lit", icon: "🛏️" },
+    { id: "wardrobe", label: "Armoire", icon: "👔" },
+    { id: "dresser", label: "Commode", icon: "🗄️" },
+    { id: "nightstand", label: "Table de chevet", icon: "🪑" },
+    { id: "mirror", label: "Miroir", icon: "🪞" },
+  ],
+  "kitchen": [
+    { id: "fridge", label: "Réfrigérateur", icon: "🧊" },
+    { id: "dishwasher", label: "Lave-vaisselle", icon: "🍽️" },
+    { id: "oven", label: "Four", icon: "🔥" },
+    { id: "microwave", label: "Micro-ondes", icon: "📱" },
+    { id: "kitchen-table", label: "Table de cuisine", icon: "🍽️" },
+    { id: "kitchen-cabinets", label: "Éléments de cuisine", icon: "🗄️" },
+  ],
+  "bathroom": [
+    { id: "washingmachine", label: "Lave-linge", icon: "🌊" },
+    { id: "dryer", label: "Sèche-linge", icon: "🌪️" },
+    { id: "bathroom-cabinet", label: "Meuble de salle de bain", icon: "🗄️" },
+    { id: "shower-cabin", label: "Cabine de douche", icon: "🚿" },
+  ],
+  "office": [
+    { id: "desk", label: "Bureau", icon: "🖥️" },
+    { id: "office-chair", label: "Chaise de bureau", icon: "🪑" },
+    { id: "filing-cabinet", label: "Classeur", icon: "🗄️" },
+    { id: "computer", label: "Ordinateur", icon: "💻" },
+  ],
+  "dining-room": [
+    { id: "dining-table", label: "Table à manger", icon: "🍽️" },
+    { id: "dining-chairs", label: "Chaises", icon: "🪑" },
+    { id: "sideboard", label: "Buffet", icon: "🗄️" },
+  ],
+  "child-room": [
+    { id: "child-bed", label: "Lit enfant", icon: "🛏️" },
+    { id: "toys", label: "Jouets", icon: "🧸" },
+    { id: "child-wardrobe", label: "Armoire enfant", icon: "👔" },
+    { id: "desk-child", label: "Bureau enfant", icon: "📚" },
+  ],
+  "garage": [
+    { id: "tools", label: "Outils", icon: "🔧" },
+    { id: "sports-equipment", label: "Équipement sport", icon: "⚽" },
+    { id: "car-parts", label: "Pièces auto", icon: "🚗" },
+  ],
+  "basement": [
+    { id: "boxes", label: "Cartons divers", icon: "📦" },
+    { id: "old-furniture", label: "Vieux meubles", icon: "🪑" },
+    { id: "wine-cellar", label: "Cave à vin", icon: "🍷" },
+  ],
+  "attic": [
+    { id: "boxes", label: "Cartons", icon: "📦" },
+    { id: "seasonal-items", label: "Objets saisonniers", icon: "🎄" },
+    { id: "old-items", label: "Objets anciens", icon: "📋" },
+  ],
+};
 
 const accessibilityOptions = [
   { value: "easy", label: "Facile", description: "Accès direct, pas d'obstacles" },
@@ -134,7 +196,8 @@ type FormData = {
   dateFlexibility: string;
   timeSlot: string;
   additionalServices: string[];
-  furnitureInventory: string[];
+  selectedRooms: { [roomId: string]: number };
+  furnitureQuantities: { [itemId: string]: number };
   departureAccessibility: string;
   arrivalAccessibility: string;
   firstName: string;
@@ -153,6 +216,8 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
   const [currentStep, setCurrentStep] = useState(-1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [achievements, setAchievements] = useState<string[]>([]);
+  const [inventoryStep, setInventoryStep] = useState<'rooms' | 'items'>('rooms');
+  const [selectedRoom, setSelectedRoom] = useState<string>('');
   const [formData, setFormData] = useState<FormData>({
     housingType: "",
     surface: 0,
@@ -171,7 +236,8 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
     dateFlexibility: "",
     timeSlot: "",
     additionalServices: [],
-    furnitureInventory: [],
+    selectedRooms: {},
+    furnitureQuantities: {},
     departureAccessibility: "",
     arrivalAccessibility: "",
     firstName: "",
@@ -252,6 +318,19 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
   };
 
   const nextStep = () => {
+    // Special handling for inventory step
+    if (currentStep === 2) {
+      if (inventoryStep === 'rooms' && Object.keys(formData.selectedRooms).length > 0) {
+        setInventoryStep('items');
+        return;
+      } else if (inventoryStep === 'items') {
+        completeStep(currentStep);
+        setCurrentStep(currentStep + 1);
+        setInventoryStep('rooms'); // Reset for next time
+        return;
+      }
+    }
+
     if (currentStep < steps.length - 1) {
       completeStep(currentStep);
       setCurrentStep(currentStep + 1);
@@ -264,6 +343,12 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
   };
 
   const prevStep = () => {
+    // Special handling for inventory step
+    if (currentStep === 2 && inventoryStep === 'items') {
+      setInventoryStep('rooms');
+      return;
+    }
+    
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
@@ -284,21 +369,56 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
     updateFormData({ additionalServices: services });
   };
 
-  const handleFurnitureToggle = (itemId: string, checked: boolean) => {
-    const items = checked
-      ? [...formData.furnitureInventory, itemId]
-      : formData.furnitureInventory.filter(i => i !== itemId);
-    updateFormData({ furnitureInventory: items });
+  const handleRoomToggle = (roomId: string, quantity: number) => {
+    const rooms = { ...formData.selectedRooms };
+    if (quantity === 0) {
+      delete rooms[roomId];
+    } else {
+      rooms[roomId] = quantity;
+    }
+    updateFormData({ selectedRooms: rooms });
+  };
+
+  const handleFurnitureQuantityChange = (itemId: string, quantity: number) => {
+    const quantities = { ...formData.furnitureQuantities };
+    if (quantity === 0) {
+      delete quantities[itemId];
+    } else {
+      quantities[itemId] = quantity;
+    }
+    updateFormData({ furnitureQuantities: quantities });
   };
 
   const generateMailtoLink = () => {
     const subject = encodeURIComponent("Demande de devis déménagement");
+    
+    // Format rooms
+    const roomsText = Object.entries(formData.selectedRooms)
+      .map(([roomId, count]) => {
+        const room = roomTypes.find(r => r.id === roomId);
+        return `${room?.label}: ${count}`;
+      })
+      .join(", ");
+    
+    // Format furniture
+    const furnitureText = Object.entries(formData.furnitureQuantities)
+      .filter(([_, qty]) => qty > 0)
+      .map(([itemKey, qty]) => {
+        const [roomId, itemId] = itemKey.split('-');
+        const room = roomTypes.find(r => r.id === roomId);
+        const item = furnitureByRoom[roomId]?.find(i => i.id === itemId);
+        return `${item?.label} (${room?.label}): ${qty}`;
+      })
+      .join(", ");
+
     const body = encodeURIComponent(`Bonjour,
 
 Je souhaite obtenir un devis pour mon déménagement avec les détails suivants :
 
 Type de logement: ${formData.housingType}
 Surface: ${formData.surface} m²
+Pièces à déménager: ${roomsText}
+Objets à transporter: ${furnitureText}
 Départ: ${formData.departureAddress}, ${formData.departureCity}
 Arrivée: ${formData.arrivalAddress}, ${formData.arrivalCity}
 Date souhaitée: ${formData.movingDate}
@@ -313,9 +433,17 @@ ${formData.phone}`);
   };
 
   const generateWhatsAppLink = () => {
+    const roomsText = Object.entries(formData.selectedRooms)
+      .map(([roomId, count]) => {
+        const room = roomTypes.find(r => r.id === roomId);
+        return `${room?.label}: ${count}`;
+      })
+      .join(", ");
+
     const text = encodeURIComponent(`Bonjour, je souhaite un devis déménagement.
 Type: ${formData.housingType}
 Surface: ${formData.surface}m²
+Pièces: ${roomsText}
 De: ${formData.departureCity} vers ${formData.arrivalCity}
 Date: ${formData.movingDate}
 Contact: ${formData.firstName} ${formData.lastName}`);
@@ -440,21 +568,95 @@ Contact: ${formData.firstName} ${formData.lastName}`);
 
           {currentStep === 2 && (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-2">
-                {furnitureItems.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-2 p-2 border rounded hover:bg-gray-50 dark:hover:bg-gray-800">
-                    <Checkbox
-                      id={item.id}
-                      checked={formData.furnitureInventory.includes(item.id)}
-                      onCheckedChange={(checked) => handleFurnitureToggle(item.id, checked as boolean)}
-                    />
-                    <label htmlFor={item.id} className="flex items-center gap-2 cursor-pointer flex-1">
-                      <span className="text-sm">{item.icon}</span>
-                      <span className="text-xs font-medium">{item.label}</span>
-                    </label>
+              {inventoryStep === 'rooms' && (
+                <div>
+                  <h4 className="font-semibold mb-3">Sélectionnez les pièces à déménager :</h4>
+                  <div className="grid grid-cols-2 gap-3">
+                    {roomTypes.map((room) => (
+                      <div key={room.id} className="p-3 border rounded hover:bg-accent/50 transition-colors">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span className="text-lg">{room.icon}</span>
+                          <span className="text-sm font-medium">{room.label}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Label htmlFor={`room-${room.id}`} className="text-xs">Nombre:</Label>
+                          <Input
+                            id={`room-${room.id}`}
+                            type="number"
+                            min="0"
+                            max="10"
+                            className="w-16 h-8 text-xs"
+                            value={formData.selectedRooms[room.id] || 0}
+                            onChange={(e) => handleRoomToggle(room.id, parseInt(e.target.value) || 0)}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                  {Object.keys(formData.selectedRooms).length > 0 && (
+                    <Button 
+                      className="w-full mt-4"
+                      onClick={() => setInventoryStep('items')}
+                    >
+                      Continuer vers les objets
+                    </Button>
+                  )}
+                </div>
+              )}
+
+              {inventoryStep === 'items' && (
+                <div>
+                  <div className="flex items-center gap-2 mb-4">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => setInventoryStep('rooms')}
+                    >
+                      ← Retour aux pièces
+                    </Button>
+                    <h4 className="font-semibold">Objets par pièce :</h4>
+                  </div>
+
+                  <div className="space-y-4">
+                    {Object.keys(formData.selectedRooms).map((roomId) => {
+                      const room = roomTypes.find(r => r.id === roomId);
+                      const roomFurniture = furnitureByRoom[roomId] || [];
+                      
+                      return (
+                        <div key={roomId} className="border rounded p-3">
+                          <div className="flex items-center gap-2 mb-3">
+                            <span className="text-lg">{room?.icon}</span>
+                            <h5 className="font-medium">{room?.label} ({formData.selectedRooms[roomId]})</h5>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 gap-2">
+                            {roomFurniture.map((item) => (
+                              <div key={`${roomId}-${item.id}`} className="flex items-center justify-between p-2 border rounded hover:bg-accent/30">
+                                <div className="flex items-center gap-2">
+                                  <span className="text-sm">{item.icon}</span>
+                                  <span className="text-xs font-medium">{item.label}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Label htmlFor={`qty-${roomId}-${item.id}`} className="text-xs">Qté:</Label>
+                                  <Input
+                                    id={`qty-${roomId}-${item.id}`}
+                                    type="number"
+                                    min="0"
+                                    max="50"
+                                    className="w-16 h-7 text-xs"
+                                    value={formData.furnitureQuantities[`${roomId}-${item.id}`] || 0}
+                                    onChange={(e) => handleFurnitureQuantityChange(`${roomId}-${item.id}`, parseInt(e.target.value) || 0)}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -694,7 +896,7 @@ Contact: ${formData.firstName} ${formData.lastName}`);
             variant="outline"
             size="sm"
             onClick={prevStep}
-            disabled={currentStep === 0}
+            disabled={currentStep === 0 && inventoryStep === 'rooms'}
             className="flex items-center gap-2"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -703,10 +905,17 @@ Contact: ${formData.firstName} ${formData.lastName}`);
           <Button
             size="sm"
             onClick={nextStep}
-            disabled={createQuoteMutation.isPending}
+            disabled={
+              createQuoteMutation.isPending || 
+              (currentStep === 2 && inventoryStep === 'rooms' && Object.keys(formData.selectedRooms).length === 0)
+            }
             className="flex items-center gap-2 cta-button text-white font-bold"
           >
-            {currentStep === steps.length - 1 ? "Terminer" : "Suivant"}
+            {currentStep === 2 && inventoryStep === 'rooms' 
+              ? "Continuer" 
+              : currentStep === steps.length - 1 
+                ? "Terminer" 
+                : "Suivant"}
             <ChevronRight className="w-4 h-4" />
           </Button>
         </div>
