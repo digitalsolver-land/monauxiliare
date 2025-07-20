@@ -51,7 +51,7 @@ const ArticleModal = ({ article, onClose }: { article: Article; onClose: () => v
           {article.summary}
         </DialogDescription>
       </DialogHeader>
-      
+
       <ScrollArea className="flex-1 p-6">
         <div className="space-y-8">
           {/* Introduction */}
@@ -67,7 +67,7 @@ const ArticleModal = ({ article, onClose }: { article: Article; onClose: () => v
                 {section.title}
               </h3>
               <p className="text-gray-700 dark:text-gray-300">{section.content}</p>
-              
+
               {section.tips && (
                 <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border-l-4 border-brand-green">
                   <h4 className="font-semibold text-green-800 dark:text-green-200 mb-3">💡 Conseils pratiques :</h4>
@@ -138,6 +138,7 @@ const ArticleModal = ({ article, onClose }: { article: Article; onClose: () => v
             </div>
           )}
         </div>
+        </div>
       </ScrollArea>
     </DialogContent>
   );
@@ -168,7 +169,7 @@ export default function Hub() {
             Votre source d'information de référence. Guides complets et astuces pour un déménagement maîtrisé.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {articles.map((article) => (
             <Dialog key={article.id}>
@@ -218,7 +219,7 @@ export default function Hub() {
             </Dialog>
           ))}
         </div>
-        
+
         {/* Newsletter Signup */}
         <div className="mt-16">
           <Card className="bg-brand-orange text-white">
