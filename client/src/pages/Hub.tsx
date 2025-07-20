@@ -138,7 +138,6 @@ const ArticleModal = ({ article, onClose }: { article: Article; onClose: () => v
             </div>
           )}
         </div>
-        </div>
       </ScrollArea>
     </DialogContent>
   );

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -283,11 +282,11 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
     if (!completedSteps.includes(stepIndex)) {
       const newCompletedSteps = [...completedSteps, stepIndex];
       setCompletedSteps(newCompletedSteps);
-      
+
       // Update progress
       const progress = (newCompletedSteps.length / steps.length) * 100;
       onProgressUpdate?.(progress);
-      
+
       // Add achievements
       const newAchievements = [...achievements];
       if (newCompletedSteps.length === 2 && !achievements.includes("Débutant")) {
@@ -302,7 +301,7 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
         newAchievements.push("Expert");
         setAchievements(newAchievements);
       }
-      
+
       // Dispatch custom event for progress
       if (typeof window !== 'undefined') {
         window.dispatchEvent(new CustomEvent('quote-progress', {
@@ -312,7 +311,7 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
           }
         }));
       }
-      
+
       trackEvent("quote_step_completed", "engagement", `step_${stepIndex}`);
     }
   };
@@ -348,7 +347,7 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
       setInventoryStep('rooms');
       return;
     }
-    
+
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
@@ -391,7 +390,7 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
 
   const generateMailtoLink = () => {
     const subject = encodeURIComponent("Demande de devis déménagement");
-    
+
     // Format rooms
     const roomsText = Object.entries(formData.selectedRooms)
       .map(([roomId, count]) => {
@@ -399,7 +398,7 @@ export default function HoneycombQuote({ onProgressUpdate }: HoneycombQuoteProps
         return `${room?.label}: ${count}`;
       })
       .join(", ");
-    
+
     // Format furniture
     const furnitureText = Object.entries(formData.furnitureQuantities)
       .filter(([_, qty]) => qty > 0)
@@ -428,7 +427,7 @@ Cordialement,
 ${formData.firstName} ${formData.lastName}
 ${formData.email}
 ${formData.phone}`);
-    
+
     return `mailto:devis@d3drone.com?subject=${subject}&body=${body}`;
   };
 
@@ -447,7 +446,7 @@ Pièces: ${roomsText}
 De: ${formData.departureCity} vers ${formData.arrivalCity}
 Date: ${formData.movingDate}
 Contact: ${formData.firstName} ${formData.lastName}`);
-    
+
     return `https://wa.me/212661206929?text=${text}`;
   };
 
@@ -621,14 +620,14 @@ Contact: ${formData.firstName} ${formData.lastName}`);
                     {Object.keys(formData.selectedRooms).map((roomId) => {
                       const room = roomTypes.find(r => r.id === roomId);
                       const roomFurniture = furnitureByRoom[roomId] || [];
-                      
+
                       return (
                         <div key={roomId} className="border rounded p-3">
                           <div className="flex items-center gap-2 mb-3">
                             <span className="text-lg">{room?.icon}</span>
                             <h5 className="font-medium">{room?.label} ({formData.selectedRooms[roomId]})</h5>
                           </div>
-                          
+
                           <div className="grid grid-cols-1 gap-2">
                             {roomFurniture.map((item) => (
                               <div key={`${roomId}-${item.id}`} className="flex items-center justify-between p-2 border rounded hover:bg-accent/30">
@@ -703,7 +702,7 @@ Contact: ${formData.firstName} ${formData.lastName}`);
                   ))}
                 </div>
               </div>
-              
+
               <div>
                 <Label htmlFor="arrival-address" className="text-sm">Adresse d'arrivée</Label>
                 <Input
@@ -975,7 +974,7 @@ Contact: ${formData.firstName} ${formData.lastName}`);
             const IconComponent = step.icon;
             const isCompleted = completedSteps.includes(step.id);
             const isActive = currentStep === step.id;
-            
+
             return (
               <div
                 key={step.id}
