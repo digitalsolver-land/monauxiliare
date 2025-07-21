@@ -1,265 +1,222 @@
-# Guide d'Installation et de Déploiement - Mon Auxiliaire
-## Installation sous Windows
+# 🖥️ Guide d'Installation Windows - Mon Auxiliaire
 
-### Prérequis
+Guide complet pour installer et lancer l'application Mon Auxiliaire sur Windows.
 
-1. **Node.js** (version 18 ou supérieure)
-   - Téléchargez depuis [nodejs.org](https://nodejs.org/)
-   - Choisissez la version LTS (Long Term Support)
-   - Vérifiez l'installation : ouvrez l'Invite de commande et tapez :
-     ```
-     node --version
-     npm --version
-     ```
+## 📋 Prérequis Windows
 
-2. **Git** (optionnel mais recommandé)
-   - Téléchargez depuis [git-scm.com](https://git-scm.com/)
-   - Utilisez les paramètres par défaut lors de l'installation
+### 1. Node.js (obligatoire)
+- **Téléchargement :** [nodejs.org](https://nodejs.org/)
+- **Version recommandée :** 20.x LTS
+- **Installation :** 
+  - Téléchargez l'installateur Windows (.msi)
+  - Lancez l'installateur et suivez les étapes
+  - Cochez "Add to PATH" pendant l'installation
+- **Vérification :**
+  ```cmd
+  node --version
+  npm --version
+  ```
 
-3. **Un éditeur de code**
-   - Visual Studio Code (recommandé) : [code.visualstudio.com](https://code.visualstudio.com/)
+### 2. Git (obligatoire)
+- **Téléchargement :** [git-scm.com](https://git-scm.com/download/win)
+- **Installation :** Installer avec les options par défaut
+- **Vérification :**
+  ```cmd
+  git --version
+  ```
 
-### Étapes d'Installation
+### 3. PostgreSQL (obligatoire)
+- **Téléchargement :** [postgresql.org](https://www.postgresql.org/download/windows/)
+- **Version recommandée :** PostgreSQL 16
+- **Installation :**
+  - Téléchargez l'installateur Windows
+  - Pendant l'installation, notez bien le mot de passe superutilisateur
+  - Port par défaut : 5432
+  - Installez pgAdmin 4 (inclus)
 
-#### 1. Récupération du Projet
-Si vous avez Git installé :
-```bash
+### 4. Éditeur de code (optionnel mais recommandé)
+- **Visual Studio Code :** [code.visualstudio.com](https://code.visualstudio.com/)
+
+## 🚀 Installation de l'Application
+
+### Étape 1 : Télécharger le projet
+```cmd
 git clone [URL_DU_PROJET]
-cd mon-auxiliaire
+cd mon-auxiliaire-app
 ```
 
-Sinon, téléchargez le projet en tant qu'archive ZIP et extrayez-le.
-
-#### 2. Installation des Dépendances
-Ouvrez l'Invite de commande (cmd) ou PowerShell dans le dossier du projet :
-
-```bash
+### Étape 2 : Installer les dépendances
+```cmd
 npm install
 ```
+⏱️ Cette étape peut prendre 2-3 minutes.
 
-Cette commande peut prendre quelques minutes pour télécharger toutes les dépendances.
+### Étape 3 : Configurer la base de données
 
-#### 3. Configuration de la Base de Données (Optionnel)
-Pour utiliser une base de données PostgreSQL :
+#### 3.1 Créer la base de données
+1. **Ouvrir pgAdmin 4** (installé avec PostgreSQL)
+2. **Se connecter** avec le mot de passe défini
+3. **Clic droit sur "Databases" > Create > Database**
+4. **Nom de la base :** `monauxiliaire_dev`
+5. **Cliquer "Save"**
 
-1. **Installer PostgreSQL** :
-   - Téléchargez depuis [postgresql.org](https://www.postgresql.org/download/windows/)
-   - Notez le mot de passe que vous définissez pour l'utilisateur `postgres`
+#### 3.2 Créer le fichier de configuration
+Créez un fichier `.env` à la racine du projet :
 
-2. **Créer une base de données** :
-   - Ouvrez pgAdmin (installé avec PostgreSQL)
-   - Créez une nouvelle base de données nommée `monauxiliaire`
+```env
+# Base de données
+DATABASE_URL=postgresql://postgres:VOTRE_MOT_DE_PASSE@localhost:5432/monauxiliaire_dev
 
-3. **Configurer les variables d'environnement** :
-   - Créez un fichier `.env` à la racine du projet :
-   ```
-   DATABASE_URL=postgresql://postgres:VOTRE_MOT_DE_PASSE@localhost:5432/monauxiliaire
-   VITE_GA_MEASUREMENT_ID=votre_id_google_analytics
-   ```
+# Port de l'application
+PORT=5000
 
-#### 4. Lancement en Mode Développement
+# Environnement
+NODE_ENV=development
 
-```bash
+# Assistant IA OpenRouter (obligatoire pour le chatbot)
+OPENROUTER_API_KEY=VOTRE_CLE_OPENROUTER
+
+# Google Analytics (optionnel)
+VITE_GA_MEASUREMENT_ID=
+
+# Session secret (générez une chaîne aléatoire)
+SESSION_SECRET=mon_secret_super_securise_123456789
+```
+
+**⚠️ Important :** Remplacez `VOTRE_MOT_DE_PASSE` par le mot de passe PostgreSQL défini lors de l'installation.
+
+#### 3.3 Obtenir la clé OpenRouter (pour l'assistant IA)
+1. **Aller sur :** [openrouter.ai](https://openrouter.ai)
+2. **Créer un compte** ou se connecter
+3. **Aller dans "API Keys"**
+4. **Créer une nouvelle clé**
+5. **Copier la clé** et la mettre dans le fichier `.env`
+
+### Étape 4 : Initialiser la base de données
+```cmd
+npm run db:push
+```
+
+### Étape 5 : Démarrer l'application
+```cmd
 npm run dev
 ```
 
-L'application sera accessible à l'adresse : `http://localhost:5000`
+✅ **Succès !** L'application est accessible sur : **http://localhost:5000**
 
-### Construction pour Production
+## 🔧 Utilisation Quotidienne
 
-#### 1. Construction du Projet
-```bash
-npm run build
+### Démarrer l'application (après installation)
+```cmd
+cd mon-auxiliaire-app
+npm run dev
 ```
 
-#### 2. Lancement en Production
-```bash
-npm start
+### Arrêter l'application
+- **Dans le terminal :** Appuyez sur `Ctrl + C`
+
+### Redémarrer après modifications
+L'application se recharge automatiquement lors des modifications du code.
+
+## 🛠️ Commandes Utiles
+
+### Développement
+```cmd
+npm run dev          # Démarre l'application en mode développement
+npm run build        # Build pour la production
+npm run start        # Démarre en mode production
 ```
 
-### Déploiement
-
-#### Option 1 : Déploiement Local (Windows Server/IIS)
-
-1. **Installer IIS** :
-   - Panneau de configuration → Programmes → Activer/Désactiver des fonctionnalités Windows
-   - Cocher "Services Internet (IIS)"
-
-2. **Installer iisnode** :
-   - Téléchargez iisnode depuis [github.com/tjanczuk/iisnode](https://github.com/tjanczuk/iisnode)
-   - Installez le package approprié pour votre version de Windows
-
-3. **Configuration IIS** :
-   - Copiez le dossier du projet dans `C:\inetpub\wwwroot\monauxiliaire`
-   - Créez un site web dans IIS Manager
-   - Pointez vers le dossier du projet
-
-4. **Fichier web.config** :
-   Créez un fichier `web.config` à la racine :
-   ```xml
-   <?xml version="1.0" encoding="utf-8"?>
-   <configuration>
-     <system.webServer>
-       <handlers>
-         <add name="iisnode" path="server/index.js" verb="*" modules="iisnode"/>
-       </handlers>
-       <rewrite>
-         <rules>
-           <rule name="NodeInspector" patternSyntax="ECMAScript" stopProcessing="true">
-             <match url="^server\/index.js\/debug[\/]?" />
-           </rule>
-           <rule name="StaticContent">
-             <action type="Rewrite" url="public{REQUEST_URI}"/>
-           </rule>
-           <rule name="DynamicContent">
-             <conditions>
-               <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="True"/>
-             </conditions>
-             <action type="Rewrite" url="server/index.js"/>
-           </rule>
-         </rules>
-       </rewrite>
-     </system.webServer>
-   </configuration>
-   ```
-
-#### Option 2 : Déploiement Cloud (Recommandé)
-
-**Netlify (pour le frontend uniquement)** :
-1. Connectez votre repository GitHub à Netlify
-2. Configuration de build :
-   - Build command : `npm run build`
-   - Publish directory : `dist/public`
-
-**Heroku (application complète)** :
-1. Installez Heroku CLI
-2. Créez une nouvelle application :
-   ```bash
-   heroku create mon-auxiliaire-app
-   ```
-3. Ajoutez la base de données PostgreSQL :
-   ```bash
-   heroku addons:create heroku-postgresql:hobby-dev
-   ```
-4. Déployez :
-   ```bash
-   git push heroku main
-   ```
-
-**Vercel (application complète)** :
-1. Installez Vercel CLI : `npm i -g vercel`
-2. Dans le dossier du projet : `vercel`
-3. Suivez les instructions
-
-#### Option 3 : VPS/Serveur Dédié
-
-1. **Installer Node.js** sur le serveur
-2. **Cloner le projet** :
-   ```bash
-   git clone [URL_DU_PROJET]
-   cd mon-auxiliaire
-   npm install
-   npm run build
-   ```
-
-3. **Installer PM2** (gestionnaire de processus) :
-   ```bash
-   npm install -g pm2
-   pm2 start server/index.js --name "mon-auxiliaire"
-   pm2 save
-   pm2 startup
-   ```
-
-4. **Configurer Nginx** (proxy inverse) :
-   ```nginx
-   server {
-       listen 80;
-       server_name votre-domaine.com;
-       
-       location / {
-           proxy_pass http://localhost:5000;
-           proxy_http_version 1.1;
-           proxy_set_header Upgrade $http_upgrade;
-           proxy_set_header Connection 'upgrade';
-           proxy_set_header Host $host;
-           proxy_cache_bypass $http_upgrade;
-       }
-   }
-   ```
-
-### Structure du Projet
-
-```
-mon-auxiliaire/
-├── client/                 # Frontend React
-│   ├── src/
-│   │   ├── components/     # Composants réutilisables
-│   │   ├── pages/         # Pages de l'application
-│   │   ├── hooks/         # Hooks personnalisés
-│   │   ├── lib/           # Utilitaires
-│   │   └── data/          # Données statiques
-├── server/                # Backend Express
-│   ├── index.ts           # Point d'entrée du serveur
-│   ├── routes.ts          # Routes API
-│   ├── storage.ts         # Interface de stockage
-│   └── vite.ts            # Configuration Vite
-├── shared/                # Code partagé
-│   └── schema.ts          # Schémas de données
-└── attached_assets/       # Assets statiques
+### Base de données
+```cmd
+npm run db:push      # Met à jour le schéma de la base de données
 ```
 
-### Scripts Disponibles
-
-- `npm run dev` : Lance en mode développement
-- `npm run build` : Construction pour production
-- `npm start` : Lance en mode production
-- `npm run db:push` : Synchronise le schéma de base de données
-- `npm run db:studio` : Ouvre l'interface de gestion DB
-
-### Troubleshooting
-
-#### Problème : "npm install" échoue
-**Solution** :
-```bash
-npm cache clean --force
-npm install
+### Vérifications
+```cmd
+npm run check        # Vérification TypeScript
 ```
 
-#### Problème : Port 5000 déjà utilisé
-**Solution** : Modifiez le port dans `server/index.ts` :
-```typescript
-const port = process.env.PORT || 3000;
+## 🔍 Résolution de Problèmes
+
+### Erreur : "node n'est pas reconnu"
+**Solution :**
+1. Redémarrez l'invite de commande
+2. Ou redémarrez Windows
+3. Vérifiez que Node.js est installé correctement
+
+### Erreur : "Port 5000 already in use"
+**Solution :**
+```cmd
+# Changez le port dans .env
+PORT=5001
 ```
 
-#### Problème : Base de données inaccessible
-**Vérifications** :
-1. PostgreSQL est-il en cours d'exécution ?
-2. Les identifiants dans `.env` sont-ils corrects ?
-3. Le firewall bloque-t-il la connexion ?
+### Erreur : "Connection to database failed"
+**Solutions :**
+1. **Vérifiez PostgreSQL :** Ouvrez pgAdmin et connectez-vous
+2. **Vérifiez le mot de passe** dans le fichier `.env`
+3. **Vérifiez que la base existe :** `monauxiliaire_dev`
 
-#### Problème : Site ne se charge pas après déploiement
-**Vérifications** :
-1. Les variables d'environnement sont-elles définies ?
-2. Les dépendances sont-elles installées ?
-3. Le processus Node.js est-il en cours d'exécution ?
+### Erreur : "OpenRouter API error: 402"
+**Solutions :**
+1. **Vérifiez votre clé API** OpenRouter
+2. **Ajoutez du crédit** sur votre compte OpenRouter
+3. **Testez la clé** sur le dashboard OpenRouter
 
-### Contact Support
+### L'application ne se charge pas
+**Solutions :**
+1. **Vérifiez l'URL :** http://localhost:5000
+2. **Vérifiez les logs** dans le terminal
+3. **Redémarrez** l'application (`Ctrl+C` puis `npm run dev`)
 
-Pour toute question technique :
-- Email : support@mon-auxiliaire.com
-- Téléphone : 06 61 20 69 29
+## 📱 Fonctionnalités Testables
 
-### Mises à Jour
+### 1. Page d'accueil
+- Slider d'images automatique
+- Boutons "Devis Gratuit" et téléphone
 
-Pour mettre à jour l'application :
-1. Récupérez les dernières modifications
-2. Réinstallez les dépendances si nécessaire
-3. Reconstruisez le projet
-4. Redémarrez l'application
+### 2. Assistant IA (chat)
+- Clic sur l'icône en bas à droite
+- Posez des questions sur le déménagement
+- L'assistant guide vers vos services
 
-```bash
+### 3. Système de devis
+- Interface en nid d'abeille
+- Formulaire étape par étape
+
+### 4. Pages de services
+- Images de vos vrais camions et équipes
+- Descriptions détaillées
+
+## 📋 Liste de Vérification Post-Installation
+
+- [ ] Node.js installé et fonctionnel
+- [ ] PostgreSQL installé et base créée
+- [ ] Fichier `.env` configuré correctement
+- [ ] Application démarre sans erreur
+- [ ] Page d'accueil accessible (http://localhost:5000)
+- [ ] Assistant IA répond aux questions
+- [ ] Formulaire de devis fonctionne
+- [ ] Images des services s'affichent
+
+## 🔄 Mise à Jour du Projet
+
+Pour récupérer les dernières modifications :
+```cmd
 git pull origin main
 npm install
-npm run build
-pm2 restart mon-auxiliaire  # Si vous utilisez PM2
+npm run db:push
 ```
+
+## 📞 Support Technique
+
+**En cas de problème :**
+1. **Vérifiez** ce guide étape par étape
+2. **Consultez** la section résolution de problèmes
+3. **Contactez** l'équipe de développement
+4. **Téléphone :** 06 61 20 69 29
+
+---
+
+**✅ Votre application Mon Auxiliaire est maintenant prête pour Windows !**

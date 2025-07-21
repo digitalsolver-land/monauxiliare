@@ -2,6 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Home, Building, Package, Warehouse, Check } from "lucide-react";
 
+// Import new service images
+import stockageImage from "@assets/images (1)_1753063478497.jfif";
+import emballageImage from "@assets/images_1753063478501.jfif";
+import residentialImage from "@assets/demenagement_1753063478503.webp";
+import corporateImage from "@assets/cover-r4x3w1000-5bb3465b93213-shutterstock-571663528_1753063478504.jpg";
+
 const services = [
   {
     id: "residential",
@@ -14,7 +20,7 @@ const services = [
       "Assurance tous risques",
       "Nettoyage final optionnel",
     ],
-    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=350"
+    image: residentialImage
   },
   {
     id: "corporate",
@@ -27,7 +33,7 @@ const services = [
       "Transport sécurisé IT",
       "Remise en service rapide",
     ],
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=350"
+    image: corporateImage
   },
   {
     id: "packing",
@@ -40,7 +46,7 @@ const services = [
       "Protection spéciale œuvres d'art",
       "Sangles et fixations",
     ],
-    image: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=350"
+    image: emballageImage
   },
   {
     id: "storage",
@@ -53,7 +59,7 @@ const services = [
       "Accès flexible",
       "Inventaire détaillé",
     ],
-    image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&h=350"
+    image: stockageImage
   },
 ];
 

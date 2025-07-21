@@ -1,7 +1,7 @@
 
-# D3Drone - Application de Déménagement
+# Mon Auxiliaire - Application de Déménagement
 
-Application web complète pour les services de déménagement au Maroc, développée avec React, TypeScript, Express et PostgreSQL.
+Application web complète pour Mon Auxiliaire, société de déménagement au Maroc, développée avec React, TypeScript, Express et PostgreSQL.
 
 ## 🚀 Fonctionnalités
 
@@ -9,7 +9,7 @@ Application web complète pour les services de déménagement au Maroc, dévelop
 - **Hub d'articles** : Centre de ressources avec conseils et guides de déménagement
 - **Support multilingue** : Interface en français et arabe
 - **Interface responsive** : Optimisée pour desktop et mobile
-- **Chatbot intégré** : Assistance automatisée pour les utilisateurs
+- **Assistant IA intelligent** : Agent commercial expert utilisant OpenRouter AI
 - **Système de contact** : Formulaires de contact avec validation
 - **Analytics** : Intégration Google Analytics pour le suivi
 
@@ -58,7 +58,7 @@ Avant de commencer, assurez-vous d'avoir installé :
 
 ```bash
 git clone <URL_DU_REPOSITORY>
-cd d3drone-app
+cd mon-auxiliaire-app
 ```
 
 ### 2. Installer les dépendances
@@ -75,7 +75,7 @@ npm install
 2. Créez une nouvelle base de données :
 
 ```sql
-CREATE DATABASE d3drone_dev;
+CREATE DATABASE monauxiliaire_dev;
 ```
 
 #### Configurer les variables d'environnement
@@ -84,13 +84,16 @@ Créez un fichier `.env` à la racine du projet :
 
 ```env
 # Base de données
-DATABASE_URL=postgresql://username:password@localhost:5432/d3drone_dev
+DATABASE_URL=postgresql://username:password@localhost:5432/monauxiliaire_dev
 
 # Port de l'application
 PORT=5000
 
 # Environnement
 NODE_ENV=development
+
+# Assistant IA OpenRouter
+OPENROUTER_API_KEY=votre_cle_openrouter
 
 # Google Analytics (optionnel)
 VITE_GA_MEASUREMENT_ID=votre_measurement_id
@@ -123,7 +126,7 @@ L'application sera accessible à l'adresse : **http://localhost:5000**
 ## 📁 Structure du projet
 
 ```
-d3drone-app/
+mon-auxiliaire-app/
 ├── client/                 # Application React frontend
 │   ├── src/
 │   │   ├── components/     # Composants réutilisables
@@ -180,8 +183,8 @@ npm run db:push      # Synchronise le schéma avec la base de données
 
 ### 4. Contact et support
 - Formulaires de contact multiples
-- Chatbot intégré
-- Support multicanal
+- Assistant IA commercial intelligent
+- Support multicanal (téléphone, email, WhatsApp)
 
 ## 🔧 Configuration avancée
 
@@ -189,7 +192,7 @@ npm run db:push      # Synchronise le schéma avec la base de données
 
 ```env
 # Base de données
-DATABASE_URL=postgresql://username:password@localhost:5432/d3drone_dev
+DATABASE_URL=postgresql://username:password@localhost:5432/monauxiliaire_dev
 
 # Serveur
 PORT=5000
@@ -197,6 +200,9 @@ NODE_ENV=development
 
 # Session
 SESSION_SECRET=votre_secret_session_tres_securise
+
+# Assistant IA OpenRouter (obligatoire)
+OPENROUTER_API_KEY=votre_cle_openrouter_api
 
 # Google Analytics
 VITE_GA_MEASUREMENT_ID=G-XXXXXXXXXX
@@ -207,9 +213,9 @@ SMTP_PORT=587
 SMTP_USER=votre_email@gmail.com
 SMTP_PASS=votre_mot_de_passe_app
 
-# WhatsApp Business API (optionnel)
-WHATSAPP_TOKEN=votre_token_whatsapp
-WHATSAPP_PHONE_ID=votre_phone_id
+# Contact Mon Auxiliaire
+COMPANY_PHONE=+212661206929
+COMPANY_EMAIL=contact@monauxiliaire.ma
 ```
 
 ### Personnalisation des couleurs
@@ -218,9 +224,9 @@ Les couleurs de la marque sont définies dans `client/src/index.css` :
 
 ```css
 :root {
-  --brand-orange: #ff6b35;
-  --brand-blue: #1e3a8a;
-  --brand-green: #059669;
+  --brand-orange: hsl(25, 100%, 59%);
+  --brand-blue: hsl(217, 33%, 17%);
+  --brand-green: hsl(160, 84%, 39%);
 }
 ```
 
@@ -294,17 +300,47 @@ npm install
 4. Pushez vers la branche
 5. Ouvrez une Pull Request
 
+## 🤖 Assistant IA Intelligent
+
+L'application inclut un assistant commercial IA utilisant OpenRouter :
+
+### Configuration de l'Assistant IA
+
+1. **Obtenez une clé API OpenRouter :**
+   - Inscrivez-vous sur [openrouter.ai](https://openrouter.ai)
+   - Créez une clé API dans votre dashboard
+   - Ajoutez-la dans votre fichier `.env` : `OPENROUTER_API_KEY=votre_cle`
+
+2. **Fonctionnalités de l'assistant :**
+   - Expert en déménagement et conseils
+   - Suggestions personnalisées des services Mon Auxiliaire
+   - Orientation vers devis gratuit et contact téléphonique
+   - Reste dans le contexte déménagement uniquement
+
+3. **Test de l'assistant :**
+   - Cliquez sur l'icône chat en bas à droite
+   - Posez des questions sur le déménagement
+   - L'assistant vous guidera vers les services appropriés
+
+### Erreur 402 OpenRouter
+
+Si vous rencontrez l'erreur "OpenRouter API error: 402", cela signifie :
+- Votre compte OpenRouter n'a pas de crédit
+- Ajoutez du crédit sur votre compte OpenRouter
+- Ou vérifiez que votre clé API est correcte
+
 ## 📞 Support
 
 Pour toute question ou problème :
-- Email : support@d3drone.com
+- Téléphone : 06 61 20 69 29
+- Email : contact@monauxiliaire.ma
 - Documentation : Consultez ce README
-- Issues : Créez un ticket dans le repository
+- WhatsApp : Contactez directement via l'application
 
 ## 📄 Licence
 
-Ce projet est sous licence MIT. Voir le fichier LICENSE pour plus de détails.
+Ce projet est sous licence propriétaire Mon Auxiliaire.
 
 ---
 
-**Développé avec ❤️ par l'équipe D3Drone**
+**Développé avec ❤️ pour Mon Auxiliaire - Votre partenaire déménagement au Maroc**

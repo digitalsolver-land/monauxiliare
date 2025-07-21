@@ -21,6 +21,11 @@ Preferred communication style: Simple, everyday language.
 ✓ Added PostgreSQL database with Drizzle ORM configuration
 ✓ Replaced in-memory storage with DatabaseStorage implementation
 ✓ Database schema successfully deployed with quotes, contacts, and users tables
+✓ **NEW**: Implemented intelligent AI assistant using OpenRouter API
+✓ **NEW**: Created functional image sliders for homepage and Hub page with real company photos
+✓ **NEW**: Replaced all service page images with authentic Mon Auxiliaire company photos
+✓ **NEW**: Updated Hub page title to orange color scheme and replaced SVG with image slider
+✓ **NEW**: Enhanced README.md and created detailed GUIDE_INSTALLATION_WINDOWS.md for deployment
 
 ## System Architecture
 
@@ -60,7 +65,8 @@ Preferred communication style: Simple, everyday language.
 ### Interactive Features
 - **HoneycombQuote**: Unique hexagonal step-by-step quote form
 - **ServiceModal**: Service detail modals with comprehensive information
-- **Chatbot**: Customer service chatbot with predefined responses
+- **AI Assistant**: Intelligent commercial agent using OpenRouter API (Claude 3.5 Sonnet)
+- **Image Sliders**: Dynamic background sliders with real company photos
 - **Theme Switcher**: Light/dark mode toggle
 
 ### Business Logic
@@ -125,6 +131,7 @@ Preferred communication style: Simple, everyday language.
 
 ### Environment Configuration
 - **DATABASE_URL**: PostgreSQL connection string
+- **OPENROUTER_API_KEY**: OpenRouter API key for AI assistant functionality
 - **VITE_GA_MEASUREMENT_ID**: Google Analytics measurement ID
 - **NODE_ENV**: Environment detection for development/production features
 
