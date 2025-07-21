@@ -76,9 +76,9 @@ export default function Home() {
   return (
     <div className="page-view">
       {/* Hero Section */}
-      <section className="relative text-white overflow-hidden">
+      <section className="relative text-white overflow-hidden min-h-screen flex items-center">
         <HeroSlider className="absolute inset-0 w-full h-full" />
-        <div className="relative z-10 container mx-auto px-6 py-20 md:py-32 text-center">
+        <div className="relative z-10 container mx-auto px-6 py-20 md:py-32 text-center w-full">
           <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
             Le déménagement,<br />la confiance en plus.
           </h1>
