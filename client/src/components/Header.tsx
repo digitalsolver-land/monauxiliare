@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useTheme } from "@/hooks/use-theme";
 import { Menu, Sun, Moon, Truck } from "lucide-react";
+import logoPath from "@assets/logo-monauxiliaire-Logo_1753056131558.png";
 
 const navigation = [
   { name: "Accueil", href: "/" },
@@ -22,9 +23,12 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
-        <Link href="/" className="flex items-center space-x-2 text-2xl font-bold brand-orange hover:opacity-80 transition-opacity">
-          <Truck className="w-8 h-8 animate-pulse-custom" />
-          <span>Mon Auxiliaire</span>
+        <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+          <img 
+            src={logoPath} 
+            alt="Mon Auxiliaire" 
+            className="h-10 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -41,7 +45,7 @@ export default function Header() {
             </Link>
           ))}
           <Link href="/devis">
-            <Button className="cta-button font-bold rounded-full animate-pulse-custom">
+            <Button className="bg-green-600 hover:bg-green-700 text-white font-bold rounded-full animate-pulse-custom transition-all">
               Devis Gratuit
             </Button>
           </Link>
@@ -94,7 +98,7 @@ export default function Header() {
                   </Link>
                 ))}
                 <Link href="/devis" onClick={() => setIsOpen(false)}>
-                  <Button className="w-full cta-button font-bold rounded-full mt-4">
+                  <Button className="w-full bg-green-600 hover:bg-green-700 text-white font-bold rounded-full mt-4 transition-all">
                     Devis Gratuit
                   </Button>
                 </Link>

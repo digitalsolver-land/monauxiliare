@@ -85,15 +85,14 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/devis">
-              <Button size="lg" className="bg-white text-brand-blue font-bold hover:bg-gray-100 transition-all">
+              <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white font-bold transition-all">
                 <Calculator className="w-5 h-5 mr-2" />
                 Devis Gratuit
               </Button>
             </Link>
             <Button 
               size="lg" 
-              variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-brand-blue transition-all"
+              className="bg-green-600 hover:bg-green-700 text-white font-bold transition-all"
               asChild
             >
               <a href="tel:+212661206929">
@@ -208,7 +207,7 @@ export default function Home() {
             Obtenez votre devis personnalisé en quelques clics avec notre widget interactif.
           </p>
           <Link href="/devis">
-            <Button size="lg" className="cta-button text-brand-dark font-bold hover:bg-yellow-400 transition-all">
+            <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white font-bold transition-all">
               <Calculator className="w-5 h-5 mr-2" />
               Calculer mon devis
             </Button>

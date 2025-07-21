@@ -146,7 +146,7 @@ export default function ServiceModal() {
                 setIsOpen(false);
                 window.location.href = "/devis";
               }}
-              className="w-full cta-button text-white font-bold py-3 rounded-full"
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-full transition-all"
             >
               Demander un devis pour ce service
             </Button>

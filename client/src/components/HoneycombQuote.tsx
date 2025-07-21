@@ -908,7 +908,7 @@ Contact: ${formData.firstName} ${formData.lastName}`);
               createQuoteMutation.isPending || 
               (currentStep === 2 && inventoryStep === 'rooms' && Object.keys(formData.selectedRooms).length === 0)
             }
-            className="flex items-center gap-2 cta-button text-white font-bold"
+            className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-bold transition-all"
           >
             {currentStep === 2 && inventoryStep === 'rooms' 
               ? "Continuer" 
@@ -939,7 +939,7 @@ Contact: ${formData.firstName} ${formData.lastName}`);
                 <Button
                   asChild
                   size="sm"
-                  className="cta-button text-white font-bold flex items-center gap-2"
+                  className="bg-green-600 hover:bg-green-700 text-white font-bold flex items-center gap-2 transition-all"
                 >
                   <a href={generateMailtoLink()}>
                     <Mail className="w-4 h-4" />

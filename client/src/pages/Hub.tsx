@@ -296,13 +296,13 @@ export default function Hub() {
 
         {/* Newsletter Signup */}
         <div className="mt-16">
-          <Card className="bg-gradient-to-r from-brand-orange to-brand-green text-white">
+          <Card className="bg-white dark:bg-gray-900 border-2 border-orange-500">
             <CardContent className="p-8 text-center">
               <div className="flex justify-center mb-4">
-                <TruckSVG className="w-12 h-12 animate-bounce-custom" />
+                <TruckSVG className="w-12 h-12 animate-bounce-custom text-orange-500" />
               </div>
-              <h3 className="text-2xl font-bold mb-4">Restez informé de nos derniers conseils</h3>
-              <p className="mb-6 opacity-90 max-w-2xl mx-auto">
+              <h3 className="text-2xl font-bold mb-4 text-orange-600 dark:text-orange-400">Restez informé de nos derniers conseils</h3>
+              <p className="mb-6 text-orange-700 dark:text-orange-300 max-w-2xl mx-auto">
                 Recevez nos guides exclusifs, astuces d'experts et nouveaux articles directement dans votre boîte mail. 
                 Rejoignez plus de 10 000 personnes qui nous font confiance.
               </p>
@@ -310,13 +310,13 @@ export default function Hub() {
                 <input 
                   type="email" 
                   placeholder="Votre adresse email"
-                  className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white/50"
+                  className="flex-1 px-4 py-3 rounded-lg border-2 border-orange-300 focus:border-orange-500 focus:outline-none text-gray-900"
                 />
-                <Button className="bg-white text-brand-orange hover:bg-gray-100 px-8 py-3 font-bold">
+                <Button className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 font-bold">
                   S'abonner gratuitement
                 </Button>
               </div>
-              <p className="text-sm opacity-75 mt-3">
+              <p className="text-sm text-orange-600 dark:text-orange-400 mt-3">
                 Pas de spam. Désabonnement facile à tout moment.
               </p>
             </CardContent>

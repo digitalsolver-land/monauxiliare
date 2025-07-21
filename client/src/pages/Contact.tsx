@@ -201,7 +201,7 @@ export default function Contact() {
 
                 <Button 
                   type="submit" 
-                  className="w-full cta-button text-white font-bold py-3 rounded-lg"
+                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all"
                   disabled={contactMutation.isPending}
                 >
                   {contactMutation.isPending ? (

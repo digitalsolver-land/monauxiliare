@@ -8,6 +8,17 @@ This is a full-stack web application for "Mon Auxiliaire", a moving company base
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (January 2025)
+
+✓ Successfully migrated project from Replit Agent to standard Replit environment
+✓ Updated logo to new Mon Auxiliaire branding (orange/gold design)
+✓ Fixed button visibility issues - changed all "Devis Gratuit" buttons to green for better visibility
+✓ Fixed newsletter signup section on Hub page - changed to orange text for visibility in both light and dark modes
+✓ Updated phone number display (06 61 20 69 29) to green for better visibility
+✓ Created comprehensive Windows installation and deployment guide
+✓ All project dependencies successfully installed and configured
+✓ Application running smoothly on port 5000
+
 ## System Architecture
 
 ### Frontend Architecture
