@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Home as HomeIcon, Building, Package, Warehouse, Phone, Calculator, Shield, Users, Clock, Star } from "lucide-react";
+import HeroSlider from "@/components/HeroSlider";
 
 const services = [
   {
@@ -75,8 +76,9 @@ export default function Home() {
   return (
     <div className="page-view">
       {/* Hero Section */}
-      <section className="hero-bg text-white">
-        <div className="container mx-auto px-6 py-20 md:py-32 text-center">
+      <section className="relative text-white overflow-hidden">
+        <HeroSlider className="absolute inset-0 w-full h-full" />
+        <div className="relative z-10 container mx-auto px-6 py-20 md:py-32 text-center">
           <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight">
             Le déménagement,<br />la confiance en plus.
           </h1>

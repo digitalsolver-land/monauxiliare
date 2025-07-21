@@ -8,6 +8,7 @@ import { TruckSVG, BoxesSVG, HouseSVG, MovingAnimation } from "@/components/Movi
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "wouter";
+import HubSlider from "@/components/HubSlider";
 
 const getCategoryColor = (category: string) => {
   switch (category) {
@@ -69,9 +70,9 @@ export default function Hub() {
         {/* Hero Section */}
         <div className="text-center mb-16">
           <div className="flex justify-center mb-6">
-            <MovingAnimation className="w-48 h-32" />
+            <HubSlider className="w-64 h-40" />
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-brand-orange to-brand-green bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-orange-600 dark:text-orange-400">
             Hub du Déménagement
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
