@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, X, Send } from "lucide-react";
+import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 type Message = {
@@ -11,26 +11,19 @@ type Message = {
   timestamp: Date;
 };
 
-const botResponses = [
-  "Bonjour ! Comment puis-je vous aider avec votre déménagement ?",
-  "Merci pour votre message. Nos services incluent le déménagement résidentiel, d'entreprise, l'emballage et le stockage. Que recherchez-vous précisément ?",
-  "Pour un devis personnalisé, je vous invite à utiliser notre formulaire interactif en cliquant sur 'Devis Gratuit'. C'est rapide et pratique !",
-  "Nos équipes sont disponibles du lundi au samedi de 8h à 18h. Vous pouvez nous joindre au 06 61 20 69 29 pour toute urgence.",
-  "Un conseiller vous recontactera dans les plus brefs délais. Y a-t-il autre chose que je puisse vous expliquer sur nos services ?",
-];
-
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Bonjour ! Je suis votre assistant virtuel Mon Auxiliaire. Comment puis-je vous aider avec votre déménagement ?",
+      text: "Bonjour ! Je suis votre assistant commercial Mon Auxiliaire, expert en déménagement. Comment puis-je vous aider avec votre projet de déménagement ?",
       sender: "bot",
       timestamp: new Date(),
     },
   ]);
   const [inputValue, setInputValue] = useState("");
   const [messageId, setMessageId] = useState(2);
+  const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -41,9 +34,9 @@ export default function Chatbot() {
     scrollToBottom();
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     const text = inputValue.trim();
-    if (!text) return;
+    if (!text || isLoading) return;
 
     // Add user message
     const userMessage: Message = {
@@ -56,20 +49,45 @@ export default function Chatbot() {
     setMessages((prev) => [...prev, userMessage]);
     setInputValue("");
     setMessageId((prev) => prev + 1);
+    setIsLoading(true);
 
-    // Simulate bot response
-    setTimeout(() => {
-      const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
+    try {
+      // Send message to AI API
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: text,
+          conversation: messages,
+        }),
+      });
+
+      const data = await response.json();
+      
       const botMessage: Message = {
         id: messageId + 1,
-        text: randomResponse,
+        text: data.success ? data.response : data.response || "Désolé, je rencontre un problème. Contactez-nous au 06 61 20 69 29.",
         sender: "bot",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, botMessage]);
       setMessageId((prev) => prev + 2);
-    }, 1000);
+    } catch (error) {
+      console.error("Chat error:", error);
+      const errorMessage: Message = {
+        id: messageId + 1,
+        text: "Désolé, je rencontre un problème technique. Vous pouvez nous contacter au 06 61 20 69 29 ou utiliser notre formulaire de devis gratuit.",
+        sender: "bot",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+      setMessageId((prev) => prev + 2);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -86,7 +104,10 @@ export default function Chatbot() {
         {/* Header */}
         <div className="p-4 border-b bg-brand-orange text-white rounded-t-xl">
           <div className="flex justify-between items-center">
-            <h4 className="font-bold">Assistant Mon Auxiliaire</h4>
+            <div>
+              <h4 className="font-bold">Assistant Mon Auxiliaire</h4>
+              <p className="text-xs opacity-90">Expert en déménagement • En ligne</p>
+            </div>
             <Button
               variant="ghost"
               size="icon"
@@ -116,6 +137,16 @@ export default function Chatbot() {
               </div>
             </div>
           ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="max-w-[80%] p-3 rounded-lg bg-white dark:bg-gray-700 text-foreground border">
+                <div className="flex items-center space-x-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <p className="text-sm">Assistant Mon Auxiliaire répond...</p>
+                </div>
+              </div>
+            </div>
+          )}
           <div ref={messagesEndRef} />
         </div>
 
@@ -133,8 +164,13 @@ export default function Chatbot() {
               onClick={handleSendMessage}
               size="icon"
               className="bg-brand-green"
+              disabled={isLoading}
             >
-              <Send className="h-4 w-4" />
+              {isLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4" />
+              )}
             </Button>
           </div>
         </div>

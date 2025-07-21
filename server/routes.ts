@@ -78,6 +78,103 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Chatbot route
+  app.post("/api/chat", async (req, res) => {
+    try {
+      const { message, conversation } = req.body;
+      
+      if (!message) {
+        res.status(400).json({ success: false, error: "Message requis" });
+        return;
+      }
+
+      const openrouterKey = process.env.OPENROUTER_API_KEY;
+      if (!openrouterKey) {
+        res.status(500).json({ success: false, error: "Configuration OpenRouter manquante" });
+        return;
+      }
+
+      // Construct conversation history for context
+      const messages = [
+        {
+          role: "system",
+          content: `Tu es l'assistant commercial expert de Mon Auxiliaire, une entreprise de déménagement au Maroc. Tu es un expert en déménagement et tu guides les clients sur le site web.
+
+RÈGLES IMPORTANTES:
+- Tu représentes uniquement Mon Auxiliaire et ses services
+- Tu es expert en déménagement et conseille les clients professionnellement
+- Tu restes TOUJOURS dans le sujet du déménagement et des services Mon Auxiliaire
+- Tu suggères uniquement nos services
+- Tu guides les clients vers notre formulaire de devis gratuit (/devis)
+- Tu orientes vers notre numéro de téléphone: 06 61 20 69 29
+- Tu ne sors JAMAIS du contexte déménagement/Mon Auxiliaire
+
+NOS SERVICES:
+- Déménagement résidentiel (appartements, maisons, villas)
+- Déménagement d'entreprise (bureaux, magasins, industries)
+- Emballage professionnel et protection des biens
+- Stockage sécurisé temporaire ou longue durée
+- Transport sécurisé partout au Maroc
+- Démontage/remontage de meubles
+- Services de nettoyage post-déménagement
+
+CONSEILS DÉMÉNAGEMENT:
+- Planification 4-6 semaines à l'avance
+- Tri et désencombrement avant le déménagement
+- Emballage soigné avec matériaux adaptés
+- Étiquetage des cartons par pièce
+- Protection des objets fragiles
+- Coordination le jour J
+
+HORAIRES: Lundi-Samedi 8h-18h
+ZONE: Tout le Maroc (Casablanca, Rabat, Marrakech, etc.)
+
+Réponds en français, sois professionnel et commercial, guide vers nos services.`
+        },
+        ...(conversation || []).map((msg: any) => ({
+          role: msg.sender === "user" ? "user" : "assistant",
+          content: msg.text
+        })),
+        {
+          role: "user",
+          content: message
+        }
+      ];
+
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${openrouterKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://monauxiliaire.ma",
+          "X-Title": "Mon Auxiliaire Assistant"
+        },
+        body: JSON.stringify({
+          model: "anthropic/claude-3.5-sonnet",
+          messages: messages,
+          max_tokens: 500,
+          temperature: 0.7
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`OpenRouter API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const botResponse = data.choices[0]?.message?.content || "Désolé, je rencontre un problème technique. Contactez-nous au 06 61 20 69 29.";
+
+      res.json({ success: true, response: botResponse });
+    } catch (error) {
+      console.error("Error in chat API:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: "Erreur du service de chat",
+        response: "Désolé, je rencontre un problème technique. Vous pouvez nous contacter directement au 06 61 20 69 29 ou utiliser notre formulaire de devis gratuit."
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
