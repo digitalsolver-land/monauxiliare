@@ -13,64 +13,51 @@ export default function HeroSlider({ className = "" }: HeroSliderProps) {
   
   const slides = [
     {
-      type: "color",
-      color: "from-orange-500 to-orange-600",
-      alt: "Fond orange Mon Auxiliaire"
-    },
-    {
-      type: "image",
       image: image1,
-      alt: "Camion Mon Auxiliaire en action - Déménagement professionnel"
+      alt: "Camion Mon Auxiliaire en action"
     },
     {
-      type: "image", 
       image: image2,
-      alt: "Équipe Mon Auxiliaire - Service de déménagement"
+      alt: "Équipe Mon Auxiliaire au travail"
     }
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4000); // Change slide every 4 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [slides.length]);
 
   return (
-    <div className={`relative overflow-hidden ${className}`}>
-      {/* Default orange background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-600" />
+    <div className={`absolute inset-0 ${className}`}>
+      {/* Orange background base */}
+      <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-600"></div>
       
-      {/* Slides */}
+      {/* Image slides */}
       {slides.map((slide, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? "opacity-100" : "opacity-0"
+            index === currentSlide ? "opacity-20" : "opacity-0"
           }`}
         >
-          {slide.type === "color" ? (
-            <div className={`w-full h-full bg-gradient-to-r ${slide.color}`} />
-          ) : (
-            <img
-              src={slide.image}
-              alt={slide.alt}
-              className="w-full h-full object-cover opacity-40"
-            />
-          )}
+          <img
+            src={slide.image}
+            alt={slide.alt}
+            className="w-full h-full object-cover"
+            loading="eager"
+          />
         </div>
       ))}
       
-      {/* Gradient overlay for text readability */}
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-600/70 to-orange-500/70" />
-      
       {/* Slide indicators */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
         {slides.map((_, index) => (
           <button
             key={index}
-            className={`w-2 h-2 rounded-full transition-all ${
+            className={`w-3 h-3 rounded-full transition-all ${
               index === currentSlide 
                 ? "bg-white" 
                 : "bg-white/50 hover:bg-white/75"
